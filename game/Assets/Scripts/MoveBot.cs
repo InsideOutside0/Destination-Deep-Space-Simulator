@@ -11,6 +11,7 @@ public class MoveBot : MonoBehaviour {
 
     private Rigidbody2D rb; // this is what handles velocity and collisions and such
 
+    private string controllerName = "WASD";
     private float hMove;
     private float vMove;
     private Vector2 velocityVector;
@@ -22,18 +23,53 @@ public class MoveBot : MonoBehaviour {
     // Start is called before the first frame update
     void Start()
     {
-        velocityVector = new Vector2();
-        rb = GetComponent<Rigidbody2D>(); // you cannot use a RigidBody without initializing it first
+        rb = GetComponent<Rigidbody2D>(); // you cannot use a RigidBody without accessing it on the object first
+    }
+
+    // I hate using six controllers
+    void getInputs()
+    {
+        if (controllerName == "WASD") {
+            hMove = Input.GetAxisRaw("WASD-H");
+            vMove = Input.GetAxisRaw("WASD-V");
+        } else if (controllerName == "ArrowKeys") {
+            hMove = Input.GetAxisRaw("ArrowKeys-H");
+            vMove = Input.GetAxisRaw("ArrowKeys-V");
+        } else if (controllerName == "Joy1") {
+            hMove = Input.GetAxisRaw("Joy1-H");
+            vMove = Input.GetAxisRaw("Joy1-V");
+        } else if (controllerName == "Joy2") {
+            hMove = Input.GetAxisRaw("Joy2-H");
+            vMove = Input.GetAxisRaw("Joy2-V");
+        } else if (controllerName == "Joy3") {
+            hMove = Input.GetAxisRaw("Joy3-H");
+            vMove = Input.GetAxisRaw("Joy3-V");
+        } else if (controllerName == "Joy4") {
+            hMove = Input.GetAxisRaw("Joy4-H");
+            vMove = Input.GetAxisRaw("Joy4-V");
+        }
+        angle = transform.rotation.eulerAngles.z; // the z angle is the effective angle in a 2D space
     }
 
     // Update is called once per frame
     void Update()
     {
-        hMove = Input.GetAxisRaw("Horizontal");
-        vMove = Input.GetAxisRaw("Vertical");
-        angle = transform.rotation.eulerAngles.z; // the z angle is the effective angle in a 2D space
+        getInputs();
     }
 
+    // Unity uses degrees. That is a disgrace, though I understand the descision.
+    private float toRadians(float num)
+    {
+        return num * Mathf.PI / 180;
+    }
+
+    // this function ensures that a number is within a given range
+    private float Clamp(float num, float min, float max)
+    {
+        if (num > max) return max;
+        else if (num < min) return min;
+        return num;
+    }
 
     // currently only doing WestCoast Drive
 
@@ -65,38 +101,22 @@ public class MoveBot : MonoBehaviour {
             velocity -= slowdown;
             velocity = Clamp(velocity, 0, velocitCap);
             if (velocity == 0) goingForward = false;
-            velocityVector = new Vector2(velocity * Mathf.Cos(toRadians(angle)), velocity * Mathf.Sin(toRadians(angle)));
+            if (goingForward)
+                velocityVector = new Vector2(velocity * Mathf.Cos(toRadians(angle)), velocity * Mathf.Sin(toRadians(angle)));
+            else
+                velocityVector = new Vector2(-velocity * Mathf.Cos(toRadians(angle)), -velocity * Mathf.Sin(toRadians(angle)));
 
         }
 
         rb.velocity = velocityVector;
     }
 
-    // this function ensures that a number is within a given range
-    private float Clamp(float num, float min, float max)
-    {
-        if (num > max) return max;
-        else if (num < min) return min;
-        return num;
-    }
-
-    // Unity uses degrees. That is a disgrace, though I understand the descision.
-    private float toRadians(float num) {
-        return num*Mathf.PI/180;
-    }
-
     private void Rotate() // uses horizontal input
     {
-        if (hMove>0) // right input
-        {
             // Vector3.forward = (0, 0, 1)
             // transform.Rotate rotates BY the angle of the parameter, not TO the angle
-            transform.Rotate(Vector3.forward * -rotationSpeed);
-        }
-        else if (hMove<0) // left input
-        {
-            transform.Rotate(Vector3.forward * rotationSpeed);
-        }
+            transform.Rotate(hMove * Vector3.forward * -rotationSpeed);
+  
     }
 
     // Called less frequently than Update()
