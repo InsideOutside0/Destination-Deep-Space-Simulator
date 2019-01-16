@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 1357997390}
   - component: {fileID: 1357997393}
   m_Layer: 0
-  m_Name: New Text
+  m_Name: MenuText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -280,7 +280,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1357997389}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.5, z: -0.0859375}
+  m_LocalPosition: {x: 0, y: 3.5, z: -0.1}
   m_LocalScale: {x: 0.05, y: 0.05, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -299,6 +299,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   z: 0
+  mainFontSize: 500
+  setupFontSize: 300
+  mainTextPosition: {x: 0, y: 3.5, z: -0.1}
+  setupTextPosition: {x: 0, y: 4, z: -0.1}
   button: {fileID: 9047864102962357457, guid: 080040049f426544dbc4d3644279b181, type: 3}
 --- !u!1 &2035073692
 GameObject:

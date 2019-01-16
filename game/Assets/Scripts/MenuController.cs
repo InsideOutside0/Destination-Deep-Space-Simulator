@@ -5,6 +5,11 @@ using UnityEngine;
 public class MenuController : MonoBehaviour
 {
     [SerializeField] float z = -0.1f;
+    [SerializeField] int mainFontSize = 500;
+    [SerializeField] int setupFontSize = 400;
+    [SerializeField] Vector3 mainTextPosition = new Vector3(0, 3.5f, -0.1f);
+    [SerializeField] Vector3 setupTextPosition = new Vector3(0, 4f, -0.1f);
+
     public Transform button;
 
     // Start is called before the first frame update
@@ -27,6 +32,13 @@ public class MenuController : MonoBehaviour
         newButton.tag = "button";
     }
 
+    void ChangeText(string s, Vector3 position, int fontSize)
+    {
+        transform.GetComponent<TextMesh>().text = s;
+        transform.GetComponent<TextMesh>().fontSize = fontSize;
+        transform.SetPositionAndRotation(position, Quaternion.identity);
+    }
+
     void RemoveAllButtons()
     {
         GameObject[] buttons = GameObject.FindGameObjectsWithTag("button");
@@ -43,18 +55,28 @@ public class MenuController : MonoBehaviour
         CreateButton("HELP", new Vector3(0, -0.5f, z));
         CreateButton("OPTIONS", new Vector3(0, -2f, z));
         CreateButton("QUIT", new Vector3(0, -3.5f, z));
+        ChangeText("Deep Space Sim", mainTextPosition, mainFontSize);
     }
 
     void LoadHelp()
     {
         RemoveAllButtons();
         CreateButton("BACK", new Vector3(0, -3.5f, z));
+        ChangeText("Instructions", mainTextPosition, mainFontSize);
     }
 
     void LoadOptions()
     {
         RemoveAllButtons();
         CreateButton("WIP", new Vector3(0, 1f, z));
+        CreateButton("BACK", new Vector3(0, -3.5f, z));
+        ChangeText("Options", mainTextPosition, mainFontSize);
+    }
+
+    void LoadSetup()
+    {
+        RemoveAllButtons();
+        ChangeText("Game Setup", setupTextPosition, setupFontSize);
         CreateButton("BACK", new Vector3(0, -3.5f, z));
     }
 
@@ -72,6 +94,7 @@ public class MenuController : MonoBehaviour
                 switch (hit.transform.name)
                 {
                     case "PLAY":
+                        LoadSetup();
                         break;
                     case "HELP":
                         LoadHelp();
@@ -91,4 +114,6 @@ public class MenuController : MonoBehaviour
             }
         }
     }
+
+
 }
