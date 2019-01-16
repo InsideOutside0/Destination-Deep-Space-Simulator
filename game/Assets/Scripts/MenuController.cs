@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MenuController : MonoBehaviour
 {
-    const float z = -0.1f;
+    [SerializeField] float z = -0.1f;
     public Transform button;
 
     // Start is called before the first frame update
@@ -69,8 +69,7 @@ public class MenuController : MonoBehaviour
             // dost thou light that burneth the sky shineth on mine button?
             if (hit.collider != null)
             {
-                print("holy shit");
-                /*switch (hit.transform.name)
+                switch (hit.transform.name)
                 {
                     case "PLAY":
                         break;
@@ -87,7 +86,7 @@ public class MenuController : MonoBehaviour
                         LoadMainMenu();
                         break;
                     default: break;
-                }*/
+                }
 
             }
         }
