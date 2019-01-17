@@ -9,8 +9,10 @@ public class MenuController : MonoBehaviour
     [SerializeField] int setupFontSize = 400;
     [SerializeField] Vector3 mainTextPosition = new Vector3(0, 3.5f, -0.1f);
     [SerializeField] Vector3 setupTextPosition = new Vector3(0, 4f, -0.1f);
+    [SerializeField] Vector3 botPosition = new Vector3(-3, 0, -0.1f);
 
     public Transform button;
+    public Transform staticBot;
 
     // Start is called before the first frame update
     void Start()
@@ -24,12 +26,20 @@ public class MenuController : MonoBehaviour
         OnClick();
     }
 
-    void CreateButton(string s, Vector3 position)
+    Transform CreateButton(string s, Vector3 position) // returns the button in event of manual override
     {
         Transform newButton = Instantiate(button, position, Quaternion.identity /* Indicates no rotation */ );
         newButton.GetComponentInChildren<TextMesh>().text = s;
         newButton.name = s;
         newButton.tag = "button";
+        return newButton;
+    }
+
+    Transform CreateBot(Vector3 position)
+    {
+        Transform b = Instantiate(staticBot, botPosition, Quaternion.identity);
+        b.tag = "staticBot";
+        return b;
     }
 
     void ChangeText(string s, Vector3 position, int fontSize)
@@ -39,18 +49,17 @@ public class MenuController : MonoBehaviour
         transform.SetPositionAndRotation(position, Quaternion.identity);
     }
 
-    void RemoveAllButtons()
+    void RemoveButtonsAndBot()
     {
         GameObject[] buttons = GameObject.FindGameObjectsWithTag("button");
-        foreach (GameObject b in buttons)
-        {
-            Object.Destroy(b);
-        }
+        GameObject[] bots = GameObject.FindGameObjectsWithTag("staticBot");
+        foreach (GameObject b in buttons) Object.Destroy(b);
+        foreach (GameObject b in bots) Object.Destroy(b);
     }
 
     void LoadMainMenu()
     {
-        RemoveAllButtons();
+        RemoveButtonsAndBot();
         CreateButton("PLAY", new Vector3(0, 1f, z));
         CreateButton("HELP", new Vector3(0, -0.5f, z));
         CreateButton("OPTIONS", new Vector3(0, -2f, z));
@@ -60,24 +69,35 @@ public class MenuController : MonoBehaviour
 
     void LoadHelp()
     {
-        RemoveAllButtons();
+        RemoveButtonsAndBot();
         CreateButton("BACK", new Vector3(0, -3.5f, z));
         ChangeText("Instructions", mainTextPosition, mainFontSize);
     }
 
     void LoadOptions()
     {
-        RemoveAllButtons();
+        RemoveButtonsAndBot();
         CreateButton("WIP", new Vector3(0, 1f, z));
         CreateButton("BACK", new Vector3(0, -3.5f, z));
         ChangeText("Options", mainTextPosition, mainFontSize);
     }
 
+    void LoadPlay()
+    {
+        RemoveButtonsAndBot();
+        CreateButton("QUICKPLAY", new Vector3(0, 1f, z));
+        CreateButton("GAME SETUP", new Vector3(0, -1.25f, z));
+        CreateButton("BACK", new Vector3(0, -3.5f, z));
+        ChangeText("Play", mainTextPosition, mainFontSize);
+    }
+
     void LoadSetup()
     {
-        RemoveAllButtons();
+        RemoveButtonsAndBot();
         ChangeText("Game Setup", setupTextPosition, setupFontSize);
-        CreateButton("BACK", new Vector3(0, -3.5f, z));
+        Transform x = CreateButton("BACK", new Vector3(0, -3.5f, z));
+        x.name = "BACK-PLAY"; // this is why the function returns the button
+        CreateBot(botPosition);
     }
 
     void OnClick()
@@ -93,8 +113,9 @@ public class MenuController : MonoBehaviour
             {
                 switch (hit.transform.name)
                 {
+                    // Main Menu
                     case "PLAY":
-                        LoadSetup();
+                        LoadPlay();
                         break;
                     case "HELP":
                         LoadHelp();
@@ -105,9 +126,22 @@ public class MenuController : MonoBehaviour
                     case "QUIT":
                         Application.Quit();
                         break;
+
+                    // Back buttons
                     case "BACK":
                         LoadMainMenu();
                         break;
+                    case "BACK-PLAY":
+                        LoadPlay();
+                        break;
+
+                    // Play menu
+                    case "QUICKPLAY":
+                        break;
+                    case "GAME SETUP":
+                        LoadSetup();
+                        break;
+                    
                     default: break;
                 }
 
