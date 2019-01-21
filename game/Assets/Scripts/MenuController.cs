@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SharpConfig;
 
 public class MenuController : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public class MenuController : MonoBehaviour
 
     Transform CreateBot(Vector3 position)
     {
-        Transform b = Instantiate(staticBot, botPosition, Quaternion.identity);
+        Transform b = Instantiate(staticBot, position, Quaternion.identity);
         b.tag = "staticBot";
         return b;
     }
@@ -49,7 +50,7 @@ public class MenuController : MonoBehaviour
         transform.SetPositionAndRotation(position, Quaternion.identity);
     }
 
-    void RemoveButtonsAndBot()
+    void ClearScreen()
     {
         GameObject[] buttons = GameObject.FindGameObjectsWithTag("button");
         GameObject[] bots = GameObject.FindGameObjectsWithTag("staticBot");
@@ -59,7 +60,7 @@ public class MenuController : MonoBehaviour
 
     void LoadMainMenu()
     {
-        RemoveButtonsAndBot();
+        ClearScreen();
         CreateButton("PLAY", new Vector3(0, 1f, z));
         CreateButton("HELP", new Vector3(0, -0.5f, z));
         CreateButton("OPTIONS", new Vector3(0, -2f, z));
@@ -69,14 +70,14 @@ public class MenuController : MonoBehaviour
 
     void LoadHelp()
     {
-        RemoveButtonsAndBot();
+        ClearScreen();
         CreateButton("BACK", new Vector3(0, -3.5f, z));
         ChangeText("Instructions", mainTextPosition, mainFontSize);
     }
 
     void LoadOptions()
     {
-        RemoveButtonsAndBot();
+        ClearScreen();
         CreateButton("WIP", new Vector3(0, 1f, z));
         CreateButton("BACK", new Vector3(0, -3.5f, z));
         ChangeText("Options", mainTextPosition, mainFontSize);
@@ -84,7 +85,7 @@ public class MenuController : MonoBehaviour
 
     void LoadPlay()
     {
-        RemoveButtonsAndBot();
+        ClearScreen();
         CreateButton("QUICKPLAY", new Vector3(0, 1f, z));
         CreateButton("GAME SETUP", new Vector3(0, -1.25f, z));
         CreateButton("BACK", new Vector3(0, -3.5f, z));
@@ -93,7 +94,7 @@ public class MenuController : MonoBehaviour
 
     void LoadSetup()
     {
-        RemoveButtonsAndBot();
+        ClearScreen();
         ChangeText("Game Setup", setupTextPosition, setupFontSize);
         Transform x = CreateButton("BACK", new Vector3(0, -3.5f, z));
         x.name = "BACK-PLAY"; // this is why the function returns the button

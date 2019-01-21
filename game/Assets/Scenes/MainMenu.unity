@@ -305,7 +305,8 @@ MonoBehaviour:
   setupTextPosition: {x: 0, y: 4, z: -0.1}
   botPosition: {x: 0, y: 0, z: 0}
   button: {fileID: 9047864102962357457, guid: 080040049f426544dbc4d3644279b181, type: 3}
-  staticBot: {fileID: 0}
+  staticBot: {fileID: 2208993871201842722, guid: 51a9ea550a699a44b8a203dee1172ff8,
+    type: 3}
 --- !u!1 &2035073692
 GameObject:
   m_ObjectHideFlags: 0
