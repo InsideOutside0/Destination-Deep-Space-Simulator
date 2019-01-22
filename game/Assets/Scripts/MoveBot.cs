@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class MoveBot : MonoBehaviour {
 
-    [SerializeField] private float rotationSpeed = 0.1f;
-    [SerializeField] private float acceleration = 1f;
-    [SerializeField] private float slowdown = 1.5f; // I refuse to call it "deceleration"
-    [SerializeField] private float velocitCap = 3f;
+    [SerializeField] private readonly float rotationSpeed = 0.1f;
+    [SerializeField] private readonly float acceleration = 1f;
+    [SerializeField] private readonly float slowdown = 1.5f; // I refuse to call it "deceleration"
+    [SerializeField] private readonly float velocitCap = 3f;
 
     private Rigidbody2D rb; // this is what handles velocity and collisions and such
 
-    private string controllerName = "WASD";
+    private readonly string controllerName = "WASD";
     private float hMove;
     private float vMove;
     private Vector2 velocityVector;
@@ -57,8 +57,15 @@ public class MoveBot : MonoBehaviour {
         getInputs();
     }
 
-    // Unity uses degrees. That is a disgrace, though I understand the descision.
-    private float toRadians(float num)
+    // Called less frequently than Update()
+    private void FixedUpdate()
+    {
+        Rotate();
+        Move();
+    }
+
+    // Unity uses degrees. That is a disgrace, though I understand the decision.
+    private float ToRadians(float num)
     {
         return num * Mathf.PI / 180;
     }
@@ -75,36 +82,36 @@ public class MoveBot : MonoBehaviour {
 
     private void Move() // uses vertical input
     {
-        if (vMove>0) { // up input
+        if (vMove>0) { // up input, forward
             // use the bot's angle to determine movemennt direction
             goingForward = true;
             if (velocity<velocitCap) {
                 velocity += acceleration;
                 velocity = Clamp(velocity, 0, velocitCap);
             }
-            velocityVector = new Vector2(velocity*Mathf.Cos(toRadians(angle)), velocity*Mathf.Sin(toRadians(angle)));
+            velocityVector = new Vector2(velocity*Mathf.Cos(ToRadians(angle)), velocity*Mathf.Sin(ToRadians(angle)));
 
-        } else if (vMove<0) {
+        } else if (vMove<0) { // down input, reverse
 
-            if (goingForward) {
+            if (goingForward) { // slow down
                 velocity -= slowdown;
                 velocity = Clamp(velocity, 0f, velocitCap);
                 if (velocity == 0) goingForward = false;
-            } else {
+            } else { // then reverse
                 velocity += acceleration;
                 velocity = Clamp(velocity, 0f, velocitCap);
-                velocityVector = new Vector2(-velocity * Mathf.Cos(toRadians(angle)), -velocity * Mathf.Sin(toRadians(angle)));
+                velocityVector = new Vector2(-velocity * Mathf.Cos(ToRadians(angle)), -velocity * Mathf.Sin(ToRadians(angle)));
             }
 
-        } else {
+        } else { // no input
 
             velocity -= slowdown;
             velocity = Clamp(velocity, 0, velocitCap);
             if (velocity == 0) goingForward = false;
             if (goingForward)
-                velocityVector = new Vector2(velocity * Mathf.Cos(toRadians(angle)), velocity * Mathf.Sin(toRadians(angle)));
+                velocityVector = new Vector2(velocity * Mathf.Cos(ToRadians(angle)), velocity * Mathf.Sin(ToRadians(angle)));
             else
-                velocityVector = new Vector2(-velocity * Mathf.Cos(toRadians(angle)), -velocity * Mathf.Sin(toRadians(angle)));
+                velocityVector = new Vector2(-velocity * Mathf.Cos(ToRadians(angle)), -velocity * Mathf.Sin(ToRadians(angle)));
 
         }
 
@@ -119,10 +126,5 @@ public class MoveBot : MonoBehaviour {
   
     }
 
-    // Called less frequently than Update()
-    private void FixedUpdate()
-    {
-        Rotate();
-        Move();
-    }
+
 }
