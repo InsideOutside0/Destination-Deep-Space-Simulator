@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using SharpConfig;
+using System.IO;
+
 
 public class MenuController : MonoBehaviour
 {
 
-    // script is big so I'll notate different sections
+    // this script is BEEFY so I'm gonna be nice and separate different sections using comments
 
     [SerializeField] float z = -0.1f;
     [SerializeField] int mainFontSize = 500;
@@ -18,10 +20,12 @@ public class MenuController : MonoBehaviour
     public Transform button;
     public Transform staticBot;
 
-    // Unity Stuff
+    // Basic Unity stuff
+
 
     void Start()
     {
+        if (!File.Exists("config.cfg")) GenerateDefaultConfig();
         LoadMainMenu();
     }
 
@@ -30,7 +34,19 @@ public class MenuController : MonoBehaviour
         OnClick();
     }
 
-    // Object Modification
+    // Config
+
+    void GenerateDefaultConfig() // how we will store all values associated with each bot
+    {
+        // will be written after first playable build is released
+    }
+
+    void GenerateQuickplayConfig() // this will be a severely reduced form of the main config
+    {
+
+    }
+
+    // Manipulating Objects
 
     Transform CreateButton(string s, Vector3 position) // returns the button in event of manual override
     {
@@ -63,7 +79,7 @@ public class MenuController : MonoBehaviour
         foreach (GameObject b in bots) Object.Destroy(b);
     }
 
-    // Load different screens
+    // Loading different screens
 
     void LoadMainMenu()
     {
@@ -99,10 +115,10 @@ public class MenuController : MonoBehaviour
         ChangeText("Play", mainTextPosition, mainFontSize);
     }
 
-    void LoadSetup()
+    void LoadManualSetup()
     {
         ClearScreen();
-        ChangeText("Game Setup", setupTextPosition, setupFontSize);
+        ChangeText("Manual Setup", setupTextPosition, setupFontSize);
         Transform x = CreateButton("BACK", new Vector3(0, -3.5f, z));
         x.name = "BACK-PLAY"; // this is why the function returns the button
         CreateBot(botPosition);
@@ -111,12 +127,13 @@ public class MenuController : MonoBehaviour
     void LoadQuickplaySetup()
     {
         ClearScreen();
-        ChangeText("Quickplay Setup", setupTextPosition, setupFontSize);
+        ChangeText("Quick Setup", setupTextPosition, setupFontSize);
         Transform x = CreateButton("BACK", new Vector3(0, -3.5f, z));
-        x.name = "BACK-PLAY";
+        x.name = "BACK-PLAY"; // this is why the function returns the button
+        if (!File.Exists("quickplay.cfg")) GenerateQuickplayConfig();
     }
 
-    // handle button clicks
+    // Button detection
 
     void OnClick()
     {
@@ -127,7 +144,7 @@ public class MenuController : MonoBehaviour
 
             RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
             // dost thou light that burneth the sky shineth on mine button?
-            if (hit.collider != null)
+            if (hit.collider != null) // if you clicked something with a collider
             {
                 switch (hit.transform.name)
                 {
@@ -142,6 +159,7 @@ public class MenuController : MonoBehaviour
                         LoadOptions();
                         break;
                     case "QUIT":
+                        // var x = 1/0;
                         Application.Quit();
                         break;
 
@@ -155,10 +173,11 @@ public class MenuController : MonoBehaviour
 
                     // Play menu
                     case "QUICKPLAY":
+                        GlobalVariables.quickplay = true;
                         LoadQuickplaySetup();
                         break;
                     case "GAME SETUP":
-                        LoadSetup();
+                        LoadManualSetup();
                         break;
                     
                     default: break;

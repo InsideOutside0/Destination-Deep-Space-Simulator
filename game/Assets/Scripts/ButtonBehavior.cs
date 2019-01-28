@@ -8,12 +8,12 @@ public class ButtonBehavior : MonoBehaviour
 
     void Start()
     {
-        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto); // arrow
     }
 
     public void OnMouseOver()
     {
-        Cursor.SetCursor(cursor, Vector2.zero, CursorMode.ForceSoftware);
+        Cursor.SetCursor(cursor, Vector2.zero, CursorMode.ForceSoftware); // hand
     }
     public void OnMouseExit()
     {
