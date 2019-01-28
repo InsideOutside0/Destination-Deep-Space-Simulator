@@ -5,6 +5,9 @@ using SharpConfig;
 
 public class MenuController : MonoBehaviour
 {
+
+    // script is big so I'll notate different sections
+
     [SerializeField] float z = -0.1f;
     [SerializeField] int mainFontSize = 500;
     [SerializeField] int setupFontSize = 400;
@@ -15,17 +18,19 @@ public class MenuController : MonoBehaviour
     public Transform button;
     public Transform staticBot;
 
-    // Start is called before the first frame update
+    // Unity Stuff
+
     void Start()
     {
         LoadMainMenu();
     }
 
-    // Update is called once per frame
     void Update()
     {
         OnClick();
     }
+
+    // Object Modification
 
     Transform CreateButton(string s, Vector3 position) // returns the button in event of manual override
     {
@@ -57,6 +62,8 @@ public class MenuController : MonoBehaviour
         foreach (GameObject b in buttons) Object.Destroy(b);
         foreach (GameObject b in bots) Object.Destroy(b);
     }
+
+    // Load different screens
 
     void LoadMainMenu()
     {
@@ -101,6 +108,16 @@ public class MenuController : MonoBehaviour
         CreateBot(botPosition);
     }
 
+    void LoadQuickplaySetup()
+    {
+        ClearScreen();
+        ChangeText("Quickplay Setup", setupTextPosition, setupFontSize);
+        Transform x = CreateButton("BACK", new Vector3(0, -3.5f, z));
+        x.name = "BACK-PLAY";
+    }
+
+    // handle button clicks
+
     void OnClick()
     {
         if (Input.GetMouseButtonDown(0)) // if left click
@@ -138,6 +155,7 @@ public class MenuController : MonoBehaviour
 
                     // Play menu
                     case "QUICKPLAY":
+                        LoadQuickplaySetup();
                         break;
                     case "GAME SETUP":
                         LoadSetup();
