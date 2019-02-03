@@ -43,7 +43,7 @@ public class MenuController : MonoBehaviour
 
     void GenerateQuickplayConfig() // this will be a severely reduced form of the main config
     {
-
+        Configuration cfg = new Configuration();
     }
 
     // Manipulating Objects
