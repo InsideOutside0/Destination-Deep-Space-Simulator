@@ -6,6 +6,7 @@ TagManager:
   tags:
   - button
   - staticBot
+  - menuInput
   layers:
   - Default
   - TransparentFX

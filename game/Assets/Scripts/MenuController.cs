@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using SharpConfig;
 using System.IO;
+using TMPro;
 
 
 public class MenuController : MonoBehaviour
@@ -16,17 +17,23 @@ public class MenuController : MonoBehaviour
     [SerializeField] float z = -0.1f;
     [SerializeField] int mainFontSize = 500;
     [SerializeField] int setupFontSize = 400;
+    [SerializeField] int canvasXOffset = 560;
+    [SerializeField] int canvasYOffset = 268;
     [SerializeField] Vector3 mainTextPosition = new Vector3(0, 3.5f, -0.1f);
     [SerializeField] Vector3 setupTextPosition = new Vector3(0, 4f, -0.1f);
     [SerializeField] Vector3 botPosition = new Vector3(-3, 0, -0.1f);
 
+    public int quickplayMenuNum;
     public Transform button;
     public Transform staticBot;
+    public Transform menuInput;
+    public Transform canvas;
 
     // Basic Unity stuff
 
     void Start()
     {
+        quickplayMenuNum = 1;
         if (!File.Exists(defaultConfig)) GenerateDefaultConfig();
         LoadMainMenu();
     }
@@ -73,6 +80,18 @@ public class MenuController : MonoBehaviour
         return b;
     }
 
+    Transform CreateMenuInput(Vector2 position, string titleText, string placeholder)
+    {
+        Transform input = Instantiate(menuInput, position, Quaternion.identity);
+        input.SetParent(canvas);
+        input.tag = "menuInput";
+        Transform area = input.GetChild(0);
+        Transform title = input.GetChild(1);
+        title.GetComponent<TextMeshProUGUI>().text = titleText;
+        print(input.position);
+        return input;
+    }
+
     void ChangeText(string s, Vector3 position, int fontSize)
     {
         transform.GetComponent<TextMesh>().text = s;
@@ -84,8 +103,11 @@ public class MenuController : MonoBehaviour
     {
         GameObject[] buttons = GameObject.FindGameObjectsWithTag("button");
         GameObject[] bots = GameObject.FindGameObjectsWithTag("staticBot");
-        foreach (GameObject b in buttons) Object.Destroy(b);
-        foreach (GameObject b in bots) Object.Destroy(b);
+        GameObject[] inputs = GameObject.FindGameObjectsWithTag("menuInput");
+        foreach (GameObject o in buttons) Object.Destroy(o);
+        foreach (GameObject o in bots) Object.Destroy(o);
+        foreach (GameObject o in inputs) Object.Destroy(o);
+
     }
 
     // Loading different screens
@@ -139,7 +161,12 @@ public class MenuController : MonoBehaviour
         ChangeText("Quick Setup", setupTextPosition, setupFontSize);
         Transform x = CreateButton("BACK", new Vector3(0, -3.5f, z));
         x.name = "BACK-PLAY"; // this is why the function returns the button
+        Transform input = CreateMenuInput(Vector2.zero,
+            "Robot " + quickplayMenuNum + " Team Number", "Enter number");
+        input.name = "Robot-" + quickplayMenuNum + "-team";
         if (!File.Exists(quickplayConfig)) GenerateQuickplayConfig();
+
+        
     }
 
     // Button detection
@@ -177,6 +204,7 @@ public class MenuController : MonoBehaviour
                         LoadMainMenu();
                         break;
                     case "BACK-PLAY":
+                        quickplayMenuNum = 1;
                         LoadPlay();
                         break;
 
