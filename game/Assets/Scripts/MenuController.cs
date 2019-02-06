@@ -10,6 +10,9 @@ public class MenuController : MonoBehaviour
 
     // this script is BEEFY so I'm gonna be nice and separate different sections using comments
 
+    const string quickplayConfig = "quickplay.cfg";
+    const string defaultConfig = "quickplay.cfg";
+
     [SerializeField] float z = -0.1f;
     [SerializeField] int mainFontSize = 500;
     [SerializeField] int setupFontSize = 400;
@@ -22,10 +25,9 @@ public class MenuController : MonoBehaviour
 
     // Basic Unity stuff
 
-
     void Start()
     {
-        if (!File.Exists("config.cfg")) GenerateDefaultConfig();
+        if (!File.Exists(defaultConfig)) GenerateDefaultConfig();
         LoadMainMenu();
     }
 
@@ -43,7 +45,14 @@ public class MenuController : MonoBehaviour
 
     void GenerateQuickplayConfig() // this will be a severely reduced form of the main config
     {
+        File.Create(quickplayConfig);
         Configuration cfg = new Configuration();
+        for (int i = 1; i<=6; i++)
+        {
+            cfg["Robot-" + i]["team-number"].IntValue = 0;
+            cfg["Robot-" + i]["controller-type"].StringValue = "";
+        }
+        cfg.SaveToFile(quickplayConfig);
     }
 
     // Manipulating Objects
@@ -130,7 +139,7 @@ public class MenuController : MonoBehaviour
         ChangeText("Quick Setup", setupTextPosition, setupFontSize);
         Transform x = CreateButton("BACK", new Vector3(0, -3.5f, z));
         x.name = "BACK-PLAY"; // this is why the function returns the button
-        if (!File.Exists("quickplay.cfg")) GenerateQuickplayConfig();
+        if (!File.Exists(quickplayConfig)) GenerateQuickplayConfig();
     }
 
     // Button detection
@@ -159,7 +168,7 @@ public class MenuController : MonoBehaviour
                         LoadOptions();
                         break;
                     case "QUIT":
-                        // var x = 1/0;
+                        // var x = 1/0; haha nice
                         Application.Quit();
                         break;
 
