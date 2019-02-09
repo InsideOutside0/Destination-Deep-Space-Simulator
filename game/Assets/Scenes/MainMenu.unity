@@ -192,7 +192,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &372458163
 GameObject:
@@ -372,7 +372,6 @@ MonoBehaviour:
   mainTextPosition: {x: 0, y: 3.5, z: -0.1}
   setupTextPosition: {x: 0, y: 4, z: -0.1}
   botPosition: {x: 0, y: 0, z: 0}
-  quickplayMenuNum: 0
   button: {fileID: 9047864102962357457, guid: 080040049f426544dbc4d3644279b181, type: 3}
   staticBot: {fileID: 2208993871201842722, guid: 51a9ea550a699a44b8a203dee1172ff8,
     type: 3}
@@ -446,8 +445,8 @@ Canvas:
   m_GameObject: {fileID: 1441541769}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 206645780}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -456,7 +455,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!224 &1441541773
 RectTransform:
@@ -470,7 +469,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -554,5 +553,5 @@ Transform:
   m_LocalScale: {x: 25, y: 11, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

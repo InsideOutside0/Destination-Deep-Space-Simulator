@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class MoveBot : MonoBehaviour {
 
-    [SerializeField] private readonly float rotationSpeed = 0.1f;
-    [SerializeField] private readonly float acceleration = 1f;
-    [SerializeField] private readonly float slowdown = 1.5f; // I refuse to call it "deceleration"
-    [SerializeField] private readonly float velocitCap = 3f;
+    public float rotationSpeed = 0.1f;
+    public float acceleration = 1f;
+    public float slowdown = 1.5f; // I refuse to call it "deceleration"
+    public float velocityCap = 3f;
 
     private Rigidbody2D rb; // this is what handles velocity and collisions and such
 
@@ -85,9 +85,9 @@ public class MoveBot : MonoBehaviour {
         if (vMove>0) { // up input, forward
             // use the bot's angle to determine movemennt direction
             goingForward = true;
-            if (velocity<velocitCap) {
+            if (velocity<velocityCap) {
                 velocity += acceleration;
-                velocity = Clamp(velocity, 0, velocitCap);
+                velocity = Clamp(velocity, 0, velocityCap);
             }
             velocityVector = new Vector2(velocity*Mathf.Cos(ToRadians(angle)), velocity*Mathf.Sin(ToRadians(angle)));
 
@@ -95,18 +95,18 @@ public class MoveBot : MonoBehaviour {
 
             if (goingForward) { // slow down
                 velocity -= slowdown;
-                velocity = Clamp(velocity, 0f, velocitCap);
+                velocity = Clamp(velocity, 0f, velocityCap);
                 if (velocity == 0) goingForward = false;
             } else { // then reverse
                 velocity += acceleration;
-                velocity = Clamp(velocity, 0f, velocitCap);
+                velocity = Clamp(velocity, 0f, velocityCap);
                 velocityVector = new Vector2(-velocity * Mathf.Cos(ToRadians(angle)), -velocity * Mathf.Sin(ToRadians(angle)));
             }
 
         } else { // no input
 
             velocity -= slowdown;
-            velocity = Clamp(velocity, 0, velocitCap);
+            velocity = Clamp(velocity, 0, velocityCap);
             if (velocity == 0) goingForward = false;
             if (goingForward)
                 velocityVector = new Vector2(velocity * Mathf.Cos(ToRadians(angle)), velocity * Mathf.Sin(ToRadians(angle)));

@@ -14,16 +14,16 @@ public class MenuController : MonoBehaviour
     const string quickplayConfig = "quickplay.cfg";
     const string defaultConfig = "quickplay.cfg";
 
-    [SerializeField] float z = -0.1f;
-    [SerializeField] int mainFontSize = 500;
-    [SerializeField] int setupFontSize = 400;
-    [SerializeField] int canvasXOffset = 560;
-    [SerializeField] int canvasYOffset = 268;
-    [SerializeField] Vector3 mainTextPosition = new Vector3(0, 3.5f, -0.1f);
-    [SerializeField] Vector3 setupTextPosition = new Vector3(0, 4f, -0.1f);
-    [SerializeField] Vector3 botPosition = new Vector3(-3, 0, -0.1f);
+    public float z = -0.1f;
+    public int mainFontSize = 500;
+    public int setupFontSize = 400;
+    public int canvasXOffset = 458;
+    public int canvasYOffset = 201;
+    public Vector3 mainTextPosition = new Vector3(0, 3.5f, -0.1f);
+    public Vector3 setupTextPosition = new Vector3(0, 4f, -0.1f);
+    public Vector3 botPosition = new Vector3(-3, 0, -0.1f);
 
-    public int quickplayMenuNum;
+    private int quickplayMenuNum;
     public Transform button;
     public Transform staticBot;
     public Transform menuInput;
@@ -80,12 +80,10 @@ public class MenuController : MonoBehaviour
         return b;
     }
 
-    Transform CreateMenuInput(Vector2 position, string titleText, string placeholder)
+    Transform CreateMenuInput(Vector3 position, string titleText, string placeholder)
     {
-        Transform input = Instantiate(menuInput, position, Quaternion.identity);
-        input.SetParent(canvas);
+        Transform input = Instantiate(menuInput, position, Quaternion.identity, canvas);
         input.tag = "menuInput";
-        Transform area = input.GetChild(0);
         Transform title = input.GetChild(1);
         title.GetComponent<TextMeshProUGUI>().text = titleText;
         print(input.position);
@@ -161,15 +159,13 @@ public class MenuController : MonoBehaviour
         ChangeText("Quick Setup", setupTextPosition, setupFontSize);
         Transform x = CreateButton("BACK", new Vector3(0, -3.5f, z));
         x.name = "BACK-PLAY"; // this is why the function returns the button
-        Transform input = CreateMenuInput(Vector2.zero,
+        Transform input = CreateMenuInput(new Vector3(-5, 0, 0),
             "Robot " + quickplayMenuNum + " Team Number", "Enter number");
-        input.name = "Robot-" + quickplayMenuNum + "-team";
         if (!File.Exists(quickplayConfig)) GenerateQuickplayConfig();
 
-        
     }
 
-    // Button detection
+    // Update events
 
     void OnClick()
     {

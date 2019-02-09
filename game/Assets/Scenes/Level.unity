@@ -396,10 +396,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 418178c001950dc4b88bc4d1c62a7d6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 2
-  acceleration: 0.25
-  slowdown: 0.5
-  velocitCap: 3
+  rotationSpeed: 1
+  acceleration: 0.2
+  slowdown: 1.5
+  velocityCap: 3
 --- !u!212 &859448426
 SpriteRenderer:
   m_ObjectHideFlags: 0
