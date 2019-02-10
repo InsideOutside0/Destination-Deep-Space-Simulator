@@ -18,8 +18,6 @@ public class MenuController : MonoBehaviour
     public float z = -0.1f;
     public int mainFontSize = 500;
     public int setupFontSize = 400;
-    public int canvasXOffset = 458;
-    public int canvasYOffset = 201;
     public Vector3 mainTextPosition = new Vector3(0, 3.5f, -0.1f);
     public Vector3 setupTextPosition = new Vector3(0, 4f, -0.1f);
     public Vector3 botPosition = new Vector3(-3, 0, -0.1f);
@@ -203,6 +201,8 @@ public class MenuController : MonoBehaviour
 
     void LoadQuickplaySetup()
     {
+        if (!File.Exists(quickplayConfig)) GenerateQuickplayConfig();
+        Configuration cfg = Configuration.LoadFromFile(quickplayConfig);
         ClearScreen();
         ChangeText("Quick Setup", setupTextPosition, setupFontSize);
         Transform b = CreateButton("BACK", new Vector3(0, -3.5f, z));
@@ -213,8 +213,39 @@ public class MenuController : MonoBehaviour
         else n.name = "NEXT-QUICK";
         Transform input = CreateMenuInput(new Vector3(-4, -.5f, 0),
             "Robot " + quickplayMenuNum + " Team Number", "Enter number", 4, true);
+        if (cfg["Robot-" + quickplayMenuNum]["team-number"].StringValue != "")
+        {
+            input.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text =
+                cfg["Robot-" + quickplayMenuNum]["team-number"].StringValue;
+            input.transform.GetChild(0).GetChild(1).transform.localScale = Vector3.zero;
+        }
+        
         Transform dropdown = CreateControllerDropdown(new Vector3(4, -.5f, 0));
-        if (!File.Exists(quickplayConfig)) GenerateQuickplayConfig();
+        string cfgDropdown = cfg["Robot-" + quickplayMenuNum]["controller-type"].StringValue;
+        switch (cfgDropdown)
+        {
+            case "WASD":
+                dropdown.GetComponent<TMP_Dropdown>().value = 0;
+                break;
+            case "ArrowKeys":
+                dropdown.GetComponent<TMP_Dropdown>().value = 1;
+                break;
+            case "Joy1":
+                dropdown.GetComponent<TMP_Dropdown>().value = 2;
+                break;
+            case "Joy2":
+                dropdown.GetComponent<TMP_Dropdown>().value = 3;
+                break;
+            case "Joy3":
+                dropdown.GetComponent<TMP_Dropdown>().value = 4;
+                break;
+            case "Joy4":
+                dropdown.GetComponent<TMP_Dropdown>().value = 5;
+                break;
+            default:
+                break;
+        }
+
 
     }
 
@@ -261,6 +292,7 @@ public class MenuController : MonoBehaviour
                     // Play menu
                     case "QUICKPLAY":
                         GlobalVariables.quickplay = true;
+                        quickplayMenuNum = 1;
                         LoadQuickplaySetup();
                         break;
                     case "GAME SETUP":
