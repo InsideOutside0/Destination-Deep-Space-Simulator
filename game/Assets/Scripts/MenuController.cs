@@ -28,6 +28,7 @@ public class MenuController : MonoBehaviour
     public Transform staticBot;
     public Transform menuInput;
     public Transform canvas;
+    public Transform controllerDropdown;
 
     // Basic Unity stuff
 
@@ -80,14 +81,23 @@ public class MenuController : MonoBehaviour
         return b;
     }
 
-    Transform CreateMenuInput(Vector3 position, string titleText, string placeholder)
+    Transform CreateMenuInput(Vector3 position, string titleText, string placeholder, int characterLimit, bool number)
     {
         Transform input = Instantiate(menuInput, position, Quaternion.identity, canvas);
         input.tag = "menuInput";
+        input.GetComponent<TMP_InputField>().characterLimit = characterLimit;
+        if (number) input.GetComponent<TMP_InputField>().contentType = TMP_InputField.ContentType.IntegerNumber;
         Transform title = input.GetChild(1);
         title.GetComponent<TextMeshProUGUI>().text = titleText;
         print(input.position);
         return input;
+    }
+
+    Transform CreateControllerDropdown(Vector3 position)
+    {
+        Transform dropdown = Instantiate(controllerDropdown, position, Quaternion.identity, canvas);
+        dropdown.tag = "controllerDropdown";
+        return dropdown;
     }
 
     void ChangeText(string s, Vector3 position, int fontSize)
@@ -102,9 +112,11 @@ public class MenuController : MonoBehaviour
         GameObject[] buttons = GameObject.FindGameObjectsWithTag("button");
         GameObject[] bots = GameObject.FindGameObjectsWithTag("staticBot");
         GameObject[] inputs = GameObject.FindGameObjectsWithTag("menuInput");
+        GameObject[] dropdowns = GameObject.FindGameObjectsWithTag("controllerDropdown");
         foreach (GameObject o in buttons) Object.Destroy(o);
         foreach (GameObject o in bots) Object.Destroy(o);
         foreach (GameObject o in inputs) Object.Destroy(o);
+        foreach (GameObject o in dropdowns) Object.Destroy(o);
 
     }
 
@@ -157,10 +169,15 @@ public class MenuController : MonoBehaviour
     {
         ClearScreen();
         ChangeText("Quick Setup", setupTextPosition, setupFontSize);
-        Transform x = CreateButton("BACK", new Vector3(0, -3.5f, z));
-        x.name = "BACK-PLAY"; // this is why the function returns the button
-        Transform input = CreateMenuInput(new Vector3(-5, 0, 0),
-            "Robot " + quickplayMenuNum + " Team Number", "Enter number");
+        Transform b = CreateButton("BACK", new Vector3(0, -3.5f, z));
+        if (quickplayMenuNum==1) b.name = "BACK-PLAY";
+        else b.name = "BACK-QUICK";
+        Transform n = CreateButton("NEXT", new Vector3(0, -2f, z));
+        if (quickplayMenuNum == 6) n.name = "TO-LEVEL-QUICK";
+        else n.name = "NEXT-QUICK";
+        Transform input = CreateMenuInput(new Vector3(-4, -.5f, 0),
+            "Robot " + quickplayMenuNum + " Team Number", "Enter number", 4, true);
+        Transform dropdown = CreateControllerDropdown(new Vector3(4, -.5f, 0));
         if (!File.Exists(quickplayConfig)) GenerateQuickplayConfig();
 
     }
@@ -212,7 +229,19 @@ public class MenuController : MonoBehaviour
                     case "GAME SETUP":
                         LoadManualSetup();
                         break;
-                    
+
+                    // Quick Setup menu
+                    case "NEXT-QUICK":
+                        quickplayMenuNum++;
+                        LoadQuickplaySetup();
+                        break;
+                    case "TO-LEVEL-QUICK":
+                        break;
+                    case "BACK-QUICK":
+                        quickplayMenuNum--;
+                        LoadQuickplaySetup();
+                        break;
+
                     default: break;
                 }
 
