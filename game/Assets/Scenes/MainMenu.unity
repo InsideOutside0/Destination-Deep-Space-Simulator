@@ -378,7 +378,7 @@ MonoBehaviour:
   menuInput: {fileID: 2095398641652747488, guid: c86a836023f97674390e6283a48466e2,
     type: 3}
   canvas: {fileID: 1441541773}
-  controllerDropdown: {fileID: 5556219208722353101, guid: 9d57aefb1dde2aa4689bfc61f4539ef1,
+  controllerDropdown: {fileID: 565647510195228674, guid: 9d57aefb1dde2aa4689bfc61f4539ef1,
     type: 3}
 --- !u!1 &1441541769
 GameObject:

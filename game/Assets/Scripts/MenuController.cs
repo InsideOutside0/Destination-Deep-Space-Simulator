@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using SharpConfig;
 using System.IO;
 using TMPro;
@@ -57,9 +58,45 @@ public class MenuController : MonoBehaviour
         Configuration cfg = new Configuration();
         for (int i = 1; i<=6; i++)
         {
-            cfg["Robot-" + i]["team-number"].IntValue = 0;
+            cfg["Robot-" + i]["team-number"].StringValue = "";
             cfg["Robot-" + i]["controller-type"].StringValue = "";
         }
+        cfg.SaveToFile(quickplayConfig);
+    }
+
+    void saveQuickplayData()
+    {
+        Configuration cfg = Configuration.LoadFromFile(quickplayConfig);
+        GameObject teamInput = GameObject.FindGameObjectWithTag("menuInput");
+        GameObject ctrlInput = GameObject.FindGameObjectWithTag("controllerDropdown");
+        string teamInputText = teamInput.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text;
+        int ctrlIndex = ctrlInput.GetComponent<TMP_Dropdown>().value;
+        string ctrlText = "";
+        switch (ctrlIndex)
+        {
+            case 0:
+                ctrlText = "WASD";
+                break;
+            case 1:
+                ctrlText = "ArrowKeys";
+                break;
+            case 2:
+                ctrlText = "Joy1";
+                break;
+            case 3:
+                ctrlText = "Joy2";
+                break;
+            case 4:
+                ctrlText = "Joy3";
+                break;
+            case 5:
+                ctrlText = "Joy4";
+                break;
+            default:
+                break;
+        }
+        cfg["Robot-" + quickplayMenuNum]["team-number"].StringValue = teamInputText;
+        cfg["Robot-" + quickplayMenuNum]["controller-type"].StringValue = ctrlText;
         cfg.SaveToFile(quickplayConfig);
     }
 
@@ -89,7 +126,6 @@ public class MenuController : MonoBehaviour
         if (number) input.GetComponent<TMP_InputField>().contentType = TMP_InputField.ContentType.IntegerNumber;
         Transform title = input.GetChild(1);
         title.GetComponent<TextMeshProUGUI>().text = titleText;
-        print(input.position);
         return input;
     }
 
@@ -217,7 +253,8 @@ public class MenuController : MonoBehaviour
                         LoadMainMenu();
                         break;
                     case "BACK-PLAY":
-                        quickplayMenuNum = 1;
+                        if (quickplayMenuNum>0) saveQuickplayData();
+                        quickplayMenuNum = 0;
                         LoadPlay();
                         break;
 
@@ -232,12 +269,16 @@ public class MenuController : MonoBehaviour
 
                     // Quick Setup menu
                     case "NEXT-QUICK":
+                        saveQuickplayData();
                         quickplayMenuNum++;
                         LoadQuickplaySetup();
                         break;
                     case "TO-LEVEL-QUICK":
+                        saveQuickplayData();
+                        SceneManager.LoadScene("Level");
                         break;
                     case "BACK-QUICK":
+                        saveQuickplayData();
                         quickplayMenuNum--;
                         LoadQuickplaySetup();
                         break;
