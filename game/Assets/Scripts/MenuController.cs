@@ -221,31 +221,6 @@ public class MenuController : MonoBehaviour
         }
         
         Transform dropdown = CreateControllerDropdown(new Vector3(4, -.5f, 0));
-        string cfgDropdown = cfg["Robot-" + quickplayMenuNum]["controller-type"].StringValue;
-        switch (cfgDropdown)
-        {
-            case "WASD":
-                dropdown.GetComponent<TMP_Dropdown>().value = 0;
-                break;
-            case "ArrowKeys":
-                dropdown.GetComponent<TMP_Dropdown>().value = 1;
-                break;
-            case "Joy1":
-                dropdown.GetComponent<TMP_Dropdown>().value = 2;
-                break;
-            case "Joy2":
-                dropdown.GetComponent<TMP_Dropdown>().value = 3;
-                break;
-            case "Joy3":
-                dropdown.GetComponent<TMP_Dropdown>().value = 4;
-                break;
-            case "Joy4":
-                dropdown.GetComponent<TMP_Dropdown>().value = 5;
-                break;
-            default:
-                break;
-        }
-
 
     }
 

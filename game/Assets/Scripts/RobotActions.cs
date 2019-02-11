@@ -5,30 +5,30 @@ using UnityEngine;
 public class RobotActions : MonoBehaviour
 {
 
-    private string cargoLevel;
-    private string panelLevel;
-    private bool hasVision;
-    private bool hasRamp;
-    private bool hasSideAuto;
-    private bool hasCenterAuto;
+    public int cargoLevel;
+    public int panelLevel;
+    public bool hasVision;
+    public bool hasRamp;
+    public bool hasSideAuto;
+    public bool hasCenterAuto;
 
-    private float lowCargoAcc;
-    private float medCargoAcc;
-    private float highCargoAcc;
-    private float lowPanelAcc;
-    private float medPanelAcc;
-    private float highPanelAcc;
-    private float sideAutoAccMod;
-    private float centerAutoAccMod;
+    public float lowCargoAcc;
+    public float medCargoAcc;
+    public float highCargoAcc;
+    public float lowPanelAcc;
+    public float medPanelAcc;
+    public float highPanelAcc;
+    public float sideAutoAccMod;
+    public float centerAutoAccMod;
 
-    private float lowCargoSpeed;
-    private float medCargoSpeed;
-    private float highCargoSpeed;
-    private float lowPanelSpeed;
-    private float medPanelSpeed;
-    private float highPanelSpeed;
-    private float sideAutoSpeedMod;
-    private float centerAutoSpeedMod;
+    public float lowCargoSpeed;
+    public float medCargoSpeed;
+    public float highCargoSpeed;
+    public float lowPanelSpeed;
+    public float medPanelSpeed;
+    public float highPanelSpeed;
+    public float sideAutoSpeedMod;
+    public float centerAutoSpeedMod;
 
 
 
@@ -44,11 +44,11 @@ public class RobotActions : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collision col)
+    /*private void OnTriggerEnter(Collision col)
     {
         if (col.gameObject.name.Equals("TestBall"))
         {
             col.gameObject.transform.parent = transform;
         }
-    }
+    }*/
 }

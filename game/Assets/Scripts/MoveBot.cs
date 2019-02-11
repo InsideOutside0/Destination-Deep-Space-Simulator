@@ -11,7 +11,7 @@ public class MoveBot : MonoBehaviour {
 
     private Rigidbody2D rb; // this is what handles velocity and collisions and such
 
-    private readonly string controllerName = "WASD";
+    public string controllerName;
     private float hMove;
     private float vMove;
     private Vector2 velocityVector;
