@@ -68,26 +68,24 @@ public class MenuController : MonoBehaviour
         GameObject teamInput = GameObject.FindGameObjectWithTag("menuInput");
         GameObject ctrlInput = GameObject.FindGameObjectWithTag("controllerDropdown");
         string teamInputText = teamInput.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text;
-        int ctrlIndex = ctrlInput.GetComponent<TMP_Dropdown>().value;
-        string ctrlText = "";
-        switch (ctrlIndex)
+        switch (quickplayMenuNum)
         {
-            case 0:
+            case 1:
                 ctrlText = "WASD";
                 break;
-            case 1:
+            case 2:
                 ctrlText = "ArrowKeys";
                 break;
-            case 2:
+            case 3:
                 ctrlText = "Joy1";
                 break;
-            case 3:
+            case 4:
                 ctrlText = "Joy2";
                 break;
-            case 4:
+            case 5:
                 ctrlText = "Joy3";
                 break;
-            case 5:
+            case 6:
                 ctrlText = "Joy4";
                 break;
             default:
@@ -127,7 +125,7 @@ public class MenuController : MonoBehaviour
         return input;
     }
 
-    Transform CreateControllerDropdown(Vector3 position)
+    Transform CreateControllerDropdown(Vector3 position) // maybe useful later?
     {
         Transform dropdown = Instantiate(controllerDropdown, position, Quaternion.identity, canvas);
         dropdown.tag = "controllerDropdown";
@@ -146,11 +144,9 @@ public class MenuController : MonoBehaviour
         GameObject[] buttons = GameObject.FindGameObjectsWithTag("button");
         GameObject[] bots = GameObject.FindGameObjectsWithTag("staticBot");
         GameObject[] inputs = GameObject.FindGameObjectsWithTag("menuInput");
-        GameObject[] dropdowns = GameObject.FindGameObjectsWithTag("controllerDropdown");
         foreach (GameObject o in buttons) Object.Destroy(o);
         foreach (GameObject o in bots) Object.Destroy(o);
         foreach (GameObject o in inputs) Object.Destroy(o);
-        foreach (GameObject o in dropdowns) Object.Destroy(o);
 
     }
 
@@ -211,7 +207,7 @@ public class MenuController : MonoBehaviour
         Transform n = CreateButton("NEXT", new Vector3(0, -2f, z));
         if (quickplayMenuNum == 6) n.name = "TO-LEVEL-QUICK";
         else n.name = "NEXT-QUICK";
-        Transform input = CreateMenuInput(new Vector3(-4, -.5f, 0),
+        Transform input = CreateMenuInput(new Vector3(0, -.5f, 0),
             "Robot " + quickplayMenuNum + " Team Number", "Enter number", 4, true);
         if (cfg["Robot-" + quickplayMenuNum]["team-number"].StringValue != "")
         {
@@ -219,9 +215,6 @@ public class MenuController : MonoBehaviour
                 cfg["Robot-" + quickplayMenuNum]["team-number"].StringValue;
             input.transform.GetChild(0).GetChild(1).transform.localScale = Vector3.zero;
         }
-        
-        Transform dropdown = CreateControllerDropdown(new Vector3(4, -.5f, 0));
-
     }
 
     // Update events
