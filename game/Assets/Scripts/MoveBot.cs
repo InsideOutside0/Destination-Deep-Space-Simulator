@@ -14,6 +14,7 @@ public class MoveBot : MonoBehaviour {
     public string controllerName;
     private float hMove;
     private float vMove;
+    public int started;
     private Vector2 velocityVector;
     private float velocity;
     private float angle = 0f;
@@ -24,6 +25,7 @@ public class MoveBot : MonoBehaviour {
     void Start()
     {
         rb = GetComponent<Rigidbody2D>(); // you cannot use a RigidBody without accessing it on the object first
+        started = 0;
     }
 
     // I hate using six controllers
@@ -115,14 +117,14 @@ public class MoveBot : MonoBehaviour {
 
         }
 
-        rb.velocity = velocityVector;
+        rb.velocity = velocityVector*started;
     }
 
     private void Rotate() // uses horizontal input
     {
             // Vector3.forward = (0, 0, 1)
             // transform.Rotate rotates BY the angle of the parameter, not TO the angle
-            transform.Rotate(hMove * Vector3.forward * -rotationSpeed);
+            transform.Rotate(started * hMove * Vector3.forward * -rotationSpeed);
   
     }
 

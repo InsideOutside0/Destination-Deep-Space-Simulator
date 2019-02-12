@@ -36,14 +36,24 @@ public class GameController : MonoBehaviour
     {
         musicSource.Play();
         PlaceBots();
+        warmupTime -= Time.deltaTime;
     }
 
     void Update()
     {
-        if (warmupTime <= 0) gameStarted = true;
+        if (warmupTime <= 0)
+        {
+            gameStarted = true;
+            ToggleEngines();
+        }
+
         if (!gameStarted) warmupTime -= Time.deltaTime;
         else gameTime -= Time.deltaTime;
         if (gameTime >= 0) timeLeft.GetComponent<TextMeshProUGUI>().text = ReturnTime((int)gameTime);
+        if (gameTime <= 0)
+        {
+            ToggleEngines();
+        }
     }
 
     string ReturnTime(int t)
@@ -52,6 +62,16 @@ public class GameController : MonoBehaviour
         string s = (t % 60).ToString();
         if (t % 60 < 10) s = "0" + s;
         return m + ":" + s;
+    }
+
+    void ToggleEngines()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            if(bots[i].GetComponent<MoveBot>().started == 0)
+                bots[i].GetComponent<MoveBot>().started = 1;
+            else bots[i].GetComponent<MoveBot>().started = 0;
+        }
     }
 
     void PlaceBots()
