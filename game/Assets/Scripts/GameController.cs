@@ -9,11 +9,16 @@ public class GameController : MonoBehaviour
     const string quickplayConfig = "quickplay.cfg";
     const string defaultConfig = "quickplay.cfg";
 
-    private float warmupTime = 0;
+    private float warmupTime = 8;
     private float gameTime = 150;
+    private float endDelay = 2;
     private bool gameStarted;
 
+    public AudioSource musicSource;
+
     public Transform botTempalte;
+    public Transform canvas;
+    public Transform timeLeft;
 
     public Vector2[] botPositions = // determined in Unity
     {
@@ -29,14 +34,16 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
+        musicSource.Play();
         PlaceBots();
     }
 
     void Update()
     {
-        if (warmupTime >= 8) gameStarted = true;
-        if (!gameStarted) warmupTime += Time.deltaTime;
+        if (warmupTime <= 0) gameStarted = true;
+        if (!gameStarted) warmupTime -= Time.deltaTime;
         else gameTime -= Time.deltaTime;
+        if (gameTime >= 0) timeLeft.GetComponent<TextMeshProUGUI>().text = ReturnTime((int)gameTime);
     }
 
     string ReturnTime(int t)
@@ -44,7 +51,7 @@ public class GameController : MonoBehaviour
         string m = (t / 60).ToString();
         string s = (t % 60).ToString();
         if (t % 60 < 10) s = "0" + s;
-        return m + " : " + s;
+        return m + ":" + s;
     }
 
     void PlaceBots()
