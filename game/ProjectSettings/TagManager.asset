@@ -12,6 +12,7 @@ TagManager:
   - lowHab
   - habRamp
   - bound
+  - rocket
   layers:
   - Default
   - TransparentFX
