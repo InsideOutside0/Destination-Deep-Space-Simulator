@@ -8,6 +8,7 @@ public class MoveBot : MonoBehaviour {
     public float acceleration = 1f;
     public float slowdown = 1.5f; // I refuse to call it "deceleration"
     public float velocityCap = 3f;
+    public int id;
 
     private Rigidbody2D rb; // this is what handles velocity and collisions and such
 

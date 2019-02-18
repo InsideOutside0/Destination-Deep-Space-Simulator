@@ -68,6 +68,7 @@ public class MenuController : MonoBehaviour
         GameObject teamInput = GameObject.FindGameObjectWithTag("menuInput");
         GameObject ctrlInput = GameObject.FindGameObjectWithTag("controllerDropdown");
         string teamInputText = teamInput.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text;
+        string ctrlText = "";
         switch (quickplayMenuNum)
         {
             case 1:
@@ -201,20 +202,21 @@ public class MenuController : MonoBehaviour
         Configuration cfg = Configuration.LoadFromFile(quickplayConfig);
         ClearScreen();
         ChangeText("Quick Setup", setupTextPosition, setupFontSize);
+
         Transform b = CreateButton("BACK", new Vector3(0, -3.5f, z));
         if (quickplayMenuNum==1) b.name = "BACK-PLAY";
         else b.name = "BACK-QUICK";
+
         Transform n = CreateButton("NEXT", new Vector3(0, -2f, z));
         if (quickplayMenuNum == 6) n.name = "TO-LEVEL-QUICK";
         else n.name = "NEXT-QUICK";
-        Transform input = CreateMenuInput(new Vector3(0, -.5f, 0),
+
+        Transform input = CreateMenuInput(new Vector3(0, .5f, 0),
             "Robot " + quickplayMenuNum + " Team Number", "Enter number", 4, true);
-        if (cfg["Robot-" + quickplayMenuNum]["team-number"].StringValue != "")
-        {
-            input.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text =
-                cfg["Robot-" + quickplayMenuNum]["team-number"].StringValue;
-            input.transform.GetChild(0).GetChild(1).transform.localScale = Vector3.zero;
-        }
+        input.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text =
+            cfg["Robot-" + quickplayMenuNum]["team-number"].StringValue;
+        input.transform.GetChild(0).GetChild(1).transform.localScale = Vector3.zero;
+        
     }
 
     // Update events

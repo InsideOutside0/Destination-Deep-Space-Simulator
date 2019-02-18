@@ -46,14 +46,11 @@ public class GameController : MonoBehaviour
             gameStarted = true;
             ToggleEngines();
         }
-
         if (!gameStarted) warmupTime -= Time.deltaTime;
         else gameTime -= Time.deltaTime;
         if (gameTime >= 0) timeLeft.GetComponent<TextMeshProUGUI>().text = ReturnTime((int)gameTime);
-        if (gameTime <= 0)
-        {
-            ToggleEngines();
-        }
+        if (gameTime <= 0) ToggleEngines();
+        
     }
 
     string ReturnTime(int t)
@@ -68,7 +65,7 @@ public class GameController : MonoBehaviour
     {
         for (int i = 0; i < 6; i++)
         {
-            if(bots[i].GetComponent<MoveBot>().started == 0)
+            if (bots[i].GetComponent<MoveBot>().started == 0)
                 bots[i].GetComponent<MoveBot>().started = 1;
             else bots[i].GetComponent<MoveBot>().started = 0;
         }
@@ -94,6 +91,7 @@ public class GameController : MonoBehaviour
             }
             bots[i].GetChild(1).GetComponent<TextMeshPro>().text = cfg["Robot-" + n]["team-number"].StringValue;
             bots[i].GetComponent<MoveBot>().controllerName = cfg["Robot-" + n]["controller-type"].StringValue;
+            bots[i].GetComponent<MoveBot>().id = i;
 
             if (GlobalVariables.quickplay)
             {
@@ -101,8 +99,6 @@ public class GameController : MonoBehaviour
                 bots[i].GetComponent<RobotActions>().panelLevel = 3;
                 bots[i].GetComponent<RobotActions>().hasVision = true;
                 bots[i].GetComponent<RobotActions>().hasRamp = false;
-                bots[i].GetComponent<RobotActions>().hasSideAuto = false;
-                bots[i].GetComponent<RobotActions>().hasCenterAuto = false;
 
                 bots[i].GetComponent<RobotActions>().lowCargoAcc = 1;
                 bots[i].GetComponent<RobotActions>().medCargoAcc = 1;
@@ -110,10 +106,8 @@ public class GameController : MonoBehaviour
                 bots[i].GetComponent<RobotActions>().lowPanelAcc = 1;
                 bots[i].GetComponent<RobotActions>().medPanelAcc = 1;
                 bots[i].GetComponent<RobotActions>().highPanelAcc = 1;
-                bots[i].GetComponent<RobotActions>().sideAutoAccMod = 1;
-                bots[i].GetComponent<RobotActions>().centerAutoAccMod = 1;
 
-                bots[i].GetComponent<RobotActions>().lowCargoSpeed = 1;
+                bots[i].GetComponent<RobotActions>().lowCargoSpeed = 1; // in seconds
                 bots[i].GetComponent<RobotActions>().medCargoSpeed = 2;
                 bots[i].GetComponent<RobotActions>().highCargoSpeed = 3;
                 bots[i].GetComponent<RobotActions>().lowPanelSpeed = 1;

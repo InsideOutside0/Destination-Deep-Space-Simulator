@@ -382,11 +382,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 418178c001950dc4b88bc4d1c62a7d6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 1
+  rotationSpeed: 3
   acceleration: 0.2
   slowdown: 1.5
-  velocityCap: 3
+  velocityCap: 8
   controllerName: 
+  started: 0
 --- !u!50 &4456862863583006987
 Rigidbody2D:
   serializedVersion: 4

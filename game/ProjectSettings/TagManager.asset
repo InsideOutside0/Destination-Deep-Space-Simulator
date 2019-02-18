@@ -8,6 +8,10 @@ TagManager:
   - staticBot
   - menuInput
   - controllerDropdown
+  - highHab
+  - lowHab
+  - habRamp
+  - bound
   layers:
   - Default
   - TransparentFX
