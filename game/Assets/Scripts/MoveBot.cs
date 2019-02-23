@@ -123,10 +123,11 @@ public class MoveBot : MonoBehaviour {
 
     private void Rotate() // uses horizontal input
     {
-            // Vector3.forward = (0, 0, 1)
-            // transform.Rotate rotates BY the angle of the parameter, not TO the angle
-            transform.Rotate(started * hMove * Vector3.forward * -rotationSpeed);
-  
+        // Vector3.forward = (0, 0, 1)
+        // transform.Rotate rotates BY the angle of the parameter, not TO the angle
+        rb.angularVelocity = 0;
+        transform.Rotate(started * hMove * Vector3.forward * -rotationSpeed);
+            
     }
 
 

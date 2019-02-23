@@ -13,6 +13,8 @@ TagManager:
   - habRamp
   - bound
   - rocket
+  - robotItem
+  - cargoBayItem
   layers:
   - Default
   - TransparentFX

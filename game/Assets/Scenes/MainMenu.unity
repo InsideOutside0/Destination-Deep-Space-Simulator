@@ -367,11 +367,8 @@ MonoBehaviour:
   z: 0
   mainFontSize: 500
   setupFontSize: 300
-  canvasXOffset: 458
-  canvasYOffset: 202
   mainTextPosition: {x: 0, y: 3.5, z: -0.1}
   setupTextPosition: {x: 0, y: 4, z: -0.1}
-  botPosition: {x: 0, y: 0, z: 0}
   button: {fileID: 9047864102962357457, guid: 080040049f426544dbc4d3644279b181, type: 3}
   staticBot: {fileID: 2208993871201842722, guid: 51a9ea550a699a44b8a203dee1172ff8,
     type: 3}
@@ -380,6 +377,9 @@ MonoBehaviour:
   canvas: {fileID: 1441541773}
   controllerDropdown: {fileID: 565647510195228674, guid: 9d57aefb1dde2aa4689bfc61f4539ef1,
     type: 3}
+  cargoOrHatch:
+  - Cargo
+  - Hatch Panel
 --- !u!1 &1441541769
 GameObject:
   m_ObjectHideFlags: 0

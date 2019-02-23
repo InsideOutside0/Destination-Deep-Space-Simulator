@@ -20,7 +20,6 @@ public class MenuController : MonoBehaviour
     public int setupFontSize = 400;
     public Vector3 mainTextPosition = new Vector3(0, 3.5f, -0.1f);
     public Vector3 setupTextPosition = new Vector3(0, 4f, -0.1f);
-    public Vector3 botPosition = new Vector3(-3, 0, -0.1f);
 
     private int quickplayMenuNum;
     public Transform button;
@@ -28,6 +27,8 @@ public class MenuController : MonoBehaviour
     public Transform menuInput;
     public Transform canvas;
     public Transform controllerDropdown;
+
+    public List<string> cargoOrHatch;
 
     // Basic Unity stuff
 
@@ -58,15 +59,19 @@ public class MenuController : MonoBehaviour
         {
             cfg["Robot-" + i]["team-number"].StringValue = "";
             cfg["Robot-" + i]["controller-type"].StringValue = "";
+            cfg["Robot-" + i]["robot-item"].StringValue = "";
+            cfg["Robot-" + i]["cargo-bay-item"].StringValue = "";
         }
         cfg.SaveToFile(quickplayConfig);
     }
 
-    void saveQuickplayData()
+    void SaveQuickplayData()
     {
         Configuration cfg = Configuration.LoadFromFile(quickplayConfig);
         GameObject teamInput = GameObject.FindGameObjectWithTag("menuInput");
-        GameObject ctrlInput = GameObject.FindGameObjectWithTag("controllerDropdown");
+        GameObject robotItem = GameObject.FindGameObjectWithTag("robotItem");
+        GameObject cargoBayItem = GameObject.FindGameObjectWithTag("cargoBayItem");
+
         string teamInputText = teamInput.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text;
         string ctrlText = "";
         switch (quickplayMenuNum)
@@ -92,8 +97,36 @@ public class MenuController : MonoBehaviour
             default:
                 break;
         }
+
+        string robotItemText = "";
+        switch (robotItem.GetComponent<TMP_Dropdown>().value)
+        {
+            case 0:
+                robotItemText = "cargo";
+                break;
+            case 1:
+                robotItemText = "panel";
+                break;
+            default:
+                break;
+        }
+        string cargoBayItemText = "";
+        switch (cargoBayItem.GetComponent<TMP_Dropdown>().value)
+        {
+            case 0:
+                cargoBayItemText = "cargo";
+                break;
+            case 1:
+                cargoBayItemText = "panel";
+                break;
+            default:
+                break;
+        }
+
         cfg["Robot-" + quickplayMenuNum]["team-number"].StringValue = teamInputText;
         cfg["Robot-" + quickplayMenuNum]["controller-type"].StringValue = ctrlText;
+        cfg["Robot-" + quickplayMenuNum]["robot-item"].StringValue = robotItemText;
+        cfg["Robot-" + quickplayMenuNum]["cargo-bay-item"].StringValue = cargoBayItemText;
         cfg.SaveToFile(quickplayConfig);
     }
 
@@ -126,10 +159,14 @@ public class MenuController : MonoBehaviour
         return input;
     }
 
-    Transform CreateControllerDropdown(Vector3 position) // maybe useful later?
+    Transform CreateDropdown(Vector3 position, string name, string tag, string title, List<string> options)
     {
         Transform dropdown = Instantiate(controllerDropdown, position, Quaternion.identity, canvas);
-        dropdown.tag = "controllerDropdown";
+        dropdown.name = name;
+        dropdown.tag = tag;
+        dropdown.GetComponent<TMP_Dropdown>().AddOptions(options);
+        Transform titleText = dropdown.GetChild(dropdown.childCount-1);
+        titleText.GetComponent<TextMeshProUGUI>().text = title;
         return dropdown;
     }
 
@@ -145,9 +182,14 @@ public class MenuController : MonoBehaviour
         GameObject[] buttons = GameObject.FindGameObjectsWithTag("button");
         GameObject[] bots = GameObject.FindGameObjectsWithTag("staticBot");
         GameObject[] inputs = GameObject.FindGameObjectsWithTag("menuInput");
+        GameObject[] robotItems = GameObject.FindGameObjectsWithTag("robotItem");
+        GameObject[] cargoBayItems = GameObject.FindGameObjectsWithTag("cargoBayItem");
         foreach (GameObject o in buttons) Object.Destroy(o);
         foreach (GameObject o in bots) Object.Destroy(o);
         foreach (GameObject o in inputs) Object.Destroy(o);
+        foreach (GameObject o in robotItems) Object.Destroy(o);
+        foreach (GameObject o in cargoBayItems) Object.Destroy(o);
+
 
     }
 
@@ -193,7 +235,6 @@ public class MenuController : MonoBehaviour
         ChangeText("Manual Setup", setupTextPosition, setupFontSize);
         Transform x = CreateButton("BACK", new Vector3(0, -3.5f, z));
         x.name = "BACK-PLAY"; // this is why the function returns the button
-        CreateBot(botPosition);
     }
 
     void LoadQuickplaySetup()
@@ -211,12 +252,16 @@ public class MenuController : MonoBehaviour
         if (quickplayMenuNum == 6) n.name = "TO-LEVEL-QUICK";
         else n.name = "NEXT-QUICK";
 
-        Transform input = CreateMenuInput(new Vector3(0, .5f, 0),
+        Transform input = CreateMenuInput(new Vector3(0, -.5f, 0),
             "Robot " + quickplayMenuNum + " Team Number", "Enter number", 4, true);
         input.transform.GetChild(0).GetChild(2).GetComponent<TextMeshProUGUI>().text =
             cfg["Robot-" + quickplayMenuNum]["team-number"].StringValue;
         input.transform.GetChild(0).GetChild(1).transform.localScale = Vector3.zero;
-        
+
+        Transform robotItem = CreateDropdown(new Vector3(-5, 1.6f, 0), "robotItem", 
+            "robotItem", "Robot's item", cargoOrHatch);
+        Transform cargoBayItem = CreateDropdown(new Vector3(5, 1.6f, 0), "cargoBayItem", "cargoBayItem", 
+            "Cargo Bay's item", cargoOrHatch);
     }
 
     // Update events
@@ -254,7 +299,7 @@ public class MenuController : MonoBehaviour
                         LoadMainMenu();
                         break;
                     case "BACK-PLAY":
-                        if (quickplayMenuNum>0) saveQuickplayData();
+                        if (quickplayMenuNum>0) SaveQuickplayData();
                         quickplayMenuNum = 0;
                         LoadPlay();
                         break;
@@ -271,16 +316,16 @@ public class MenuController : MonoBehaviour
 
                     // Quick Setup menu
                     case "NEXT-QUICK":
-                        saveQuickplayData();
+                        SaveQuickplayData();
                         quickplayMenuNum++;
                         LoadQuickplaySetup();
                         break;
                     case "TO-LEVEL-QUICK":
-                        saveQuickplayData();
+                        SaveQuickplayData();
                         SceneManager.LoadScene("Level");
                         break;
                     case "BACK-QUICK":
-                        saveQuickplayData();
+                        SaveQuickplayData();
                         quickplayMenuNum--;
                         LoadQuickplaySetup();
                         break;
