@@ -181,7 +181,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -370, y: 10}
+  m_AnchoredPosition: {x: -350, y: 10}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &89895687
@@ -584,7 +584,7 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -1040,6 +1040,11 @@ MonoBehaviour:
   highPanelSpeed: 0
   sideAutoSpeedMod: 0
   centerAutoSpeedMod: 0
+  gameController: {fileID: 0}
+  pressedAction: 0
+  pressedMid: 0
+  pressedHigh: 0
+  currentAction: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1051,7 +1056,6 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
-  - component: {fileID: 519420030}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1067,63 +1071,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
---- !u!114 &519420030
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2f5f13b076e26340829464011703f4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicSource: {fileID: 1898912739}
-  botTempalte: {fileID: 4456862863583006988, guid: 00c6240494a679c49b03af73f16f2fd2,
-    type: 3}
-  rocket: {fileID: 5966218206820280277, guid: 06509c0418c5cc44f9cbed929cf9004c, type: 3}
-  cargoBay: {fileID: 336875029567353642, guid: 12988454879f9474aa3c56691e7598ce, type: 3}
-  redCargoShip: {fileID: 236495761}
-  blueCargoShip: {fileID: 644492392}
-  canvas: {fileID: 179234004}
-  timeLeft: {fileID: 1812812062}
-  redScorekeeper: {fileID: 1382583105}
-  blueScorekeeper: {fileID: 535115742}
-  botPositions:
-  - {x: -25, y: 3.666667}
-  - {x: -25, y: 0}
-  - {x: -25, y: -3.666667}
-  - {x: 25, y: 3.666667}
-  - {x: 25, y: 0}
-  - {x: 25, y: -3.666667}
-  rocketPositions:
-  - {x: -8, y: -11.25, z: 0}
-  - {x: -8, y: 11.25, z: 0}
-  - {x: 8, y: -11.25, z: 0}
-  - {x: 8, y: 11.25, z: 0}
-  redCargoBayPositions:
-  - {x: -5.75, y: -1.666667, z: 0}
-  - {x: -3.85, y: -1.666667, z: 0}
-  - {x: -1.95, y: -1.666667, z: 0}
-  - {x: -5.75, y: 1.666667, z: 0}
-  - {x: -3.85, y: 1.666667, z: 0}
-  - {x: -1.95, y: 1.666667, z: 0}
-  - {x: -7.166667, y: 0.95, z: 0}
-  - {x: -7.166667, y: -0.95, z: 0}
-  blueCargoBayPositions:
-  - {x: 5.75, y: -1.666667, z: 0}
-  - {x: 3.85, y: -1.666667, z: 0}
-  - {x: 1.95, y: -1.666667, z: 0}
-  - {x: 5.75, y: 1.666667, z: 0}
-  - {x: 3.85, y: 1.666667, z: 0}
-  - {x: 1.95, y: 1.666667, z: 0}
-  - {x: 7.166667, y: 0.95, z: 0}
-  - {x: 7.166667, y: -0.95, z: 0}
-  bots: []
-  rockets: []
-  redCargoBays: []
-  blueCargoBays: []
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -1214,7 +1161,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 370, y: -10}
+  m_AnchoredPosition: {x: 350, y: -10}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &535115743
@@ -1340,6 +1287,96 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 535115741}
   m_CullTransparentMesh: 0
+--- !u!1 &541537337
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 541537339}
+  - component: {fileID: 541537338}
+  m_Layer: 0
+  m_Name: GameController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &541537338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541537337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2f5f13b076e26340829464011703f4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicSource: {fileID: 1898912739}
+  botTempalte: {fileID: 4456862863583006988, guid: 00c6240494a679c49b03af73f16f2fd2,
+    type: 3}
+  rocket: {fileID: 5966218206820280277, guid: 06509c0418c5cc44f9cbed929cf9004c, type: 3}
+  cargoBay: {fileID: 336875029567353642, guid: 12988454879f9474aa3c56691e7598ce, type: 3}
+  redCargoShip: {fileID: 236495761}
+  blueCargoShip: {fileID: 644492392}
+  cargo: {fileID: 0}
+  panel: {fileID: 0}
+  canvas: {fileID: 179234004}
+  timeLeft: {fileID: 1812812062}
+  redScorekeeper: {fileID: 1382583105}
+  blueScorekeeper: {fileID: 535115742}
+  botPositions:
+  - {x: -25, y: 3.666667}
+  - {x: -25, y: 0}
+  - {x: -25, y: -3.666667}
+  - {x: 25, y: 3.666667}
+  - {x: 25, y: 0}
+  - {x: 25, y: -3.666667}
+  rocketPositions:
+  - {x: -8, y: -11.25, z: 0}
+  - {x: -8, y: 11.25, z: 0}
+  - {x: 8, y: -11.25, z: 0}
+  - {x: 8, y: 11.25, z: 0}
+  redCargoBayPositions:
+  - {x: -5.75, y: -1.666667, z: 0}
+  - {x: -3.85, y: -1.666667, z: 0}
+  - {x: -1.95, y: -1.666667, z: 0}
+  - {x: -5.75, y: 1.666667, z: 0}
+  - {x: -3.85, y: 1.666667, z: 0}
+  - {x: -1.95, y: 1.666667, z: 0}
+  - {x: -7.166667, y: 0.95, z: 0}
+  - {x: -7.166667, y: -0.95, z: 0}
+  blueCargoBayPositions:
+  - {x: 5.75, y: -1.666667, z: 0}
+  - {x: 3.85, y: -1.666667, z: 0}
+  - {x: 1.95, y: -1.666667, z: 0}
+  - {x: 5.75, y: 1.666667, z: 0}
+  - {x: 3.85, y: 1.666667, z: 0}
+  - {x: 1.95, y: 1.666667, z: 0}
+  - {x: 7.166667, y: 0.95, z: 0}
+  - {x: 7.166667, y: -0.95, z: 0}
+  bots: []
+  rockets: []
+  redCargoBays: []
+  blueCargoBays: []
+--- !u!4 &541537339
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 541537337}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &644492391
 GameObject:
   m_ObjectHideFlags: 0
@@ -2012,7 +2049,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 370, y: 10}
+  m_AnchoredPosition: {x: 350, y: 10}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1314400846
@@ -2172,7 +2209,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -370, y: -10}
+  m_AnchoredPosition: {x: -350, y: -10}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1382583106
@@ -2779,7 +2816,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 182}
+  m_AnchoredPosition: {x: 0, y: 167}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1812812063

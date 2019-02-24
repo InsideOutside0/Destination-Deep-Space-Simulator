@@ -30,25 +30,76 @@ public class RobotActions : MonoBehaviour
     public float sideAutoSpeedMod;
     public float centerAutoSpeedMod;
 
-
+    public GameController gameController;
+    public bool pressedAction;
+    public bool pressedMid;
+    public bool pressedHigh;
+    public GameController.Action currentAction;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        currentAction = GameController.Action.None;
+        gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        pressedAction = false;
+        pressedMid = false;
+        pressedHigh = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        GetInputs();
     }
 
-    /*private void OnTriggerEnter(Collision col)
+    void GetInputs()
     {
-        if (col.gameObject.name.Equals("TestBall"))
+        float actionInput = 0;
+        float midInput = 0;
+        float highInput = 0;
+        string controllerName = transform.GetComponent<MoveBot>().controllerName;
+        switch (controllerName)
         {
-            col.gameObject.transform.parent = transform;
+            case "WASD":
+                actionInput = Input.GetAxisRaw("WASD-Action");
+                midInput = Input.GetAxisRaw("WASD-Mid");
+                highInput = Input.GetAxisRaw("WASD-High");
+                break;
+            case "ArrowKeys":
+                actionInput = Input.GetAxisRaw("ArrowKeys-Action");
+                midInput = Input.GetAxisRaw("ArrowKeys-Mid");
+                highInput = Input.GetAxisRaw("ArrowKeys-High");
+                break;
+            case "Joy1":
+                actionInput = Input.GetAxisRaw("Joy1-Action");
+                midInput = Input.GetAxisRaw("Joy1-Mid");
+                highInput = Input.GetAxisRaw("Joy1-High");
+                break;
+            case "Joy2":
+                actionInput = Input.GetAxisRaw("Joy2-Action");
+                midInput = Input.GetAxisRaw("Joy2-Mid");
+                highInput = Input.GetAxisRaw("Joy2-High");
+                break;
+            case "Joy3":
+                actionInput = Input.GetAxisRaw("Joy3-Action");
+                midInput = Input.GetAxisRaw("Joy3-Mid");
+                highInput = Input.GetAxisRaw("Joy3-High");
+                break;
+            case "Joy4":
+                actionInput = Input.GetAxisRaw("Joy4-Action");
+                midInput = Input.GetAxisRaw("Joy4-Mid");
+                highInput = Input.GetAxisRaw("Joy4-High");
+                break;
+            default: break;
         }
-    }*/
+        if (actionInput >= 1) pressedAction = true;
+        if (midInput >= 1) pressedMid = true;
+        if (highInput >= 1) pressedHigh = true;
+    }
+
+    public void StartAction(GameController.Action action)
+    {
+
+    }
+
 }

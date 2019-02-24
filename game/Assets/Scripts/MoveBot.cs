@@ -30,7 +30,7 @@ public class MoveBot : MonoBehaviour {
     }
 
     // I hate using six controllers
-    void getInputs()
+    void GetInputs()
     {
         if (controllerName == "WASD") {
             hMove = Input.GetAxisRaw("WASD-H");
@@ -57,7 +57,7 @@ public class MoveBot : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        getInputs();
+        GetInputs();
     }
 
     // Called less frequently than Update()

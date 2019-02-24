@@ -6,6 +6,9 @@ using TMPro;
 
 public class GameController : MonoBehaviour
 {
+    public enum Action { None, CollectCargo, CollectPanel, CargoLow, CargoMid, CargoHigh,
+        PanelLow, PanelMid, PanelHigh, CargoInBay, PanelInBay };
+
     const string quickplayConfig = "quickplay.cfg";
     const string defaultConfig = "quickplay.cfg";
 
@@ -14,17 +17,20 @@ public class GameController : MonoBehaviour
     private float endDelay = 2;
     private bool gameStarted;
 
-    private int redScore;
-    private int blueScore;
+    private int redRemainingCargo = 24;
+    private int blueRemainingCargo = 24;
+    private int redRemainingPanels = 24;
+    private int blueRemainingPanels = 24;
 
     public AudioSource musicSource;
 
     public Transform botTempalte;
     public Transform rocket;
     public Transform cargoBay;
-
     public Transform redCargoShip;
     public Transform blueCargoShip;
+    public Transform cargo;
+    public Transform panel;
 
     public Transform canvas;
     public Transform timeLeft;
@@ -51,30 +57,46 @@ public class GameController : MonoBehaviour
 
     public Vector3[] redCargoBayPositions =
     {
-        new Vector3(), // face down
-        new Vector3(),
-        new Vector3(),
-        new Vector3(), // face up
-        new Vector3(),
-        new Vector3(),
-        new Vector3(), // face left
-        new Vector3(),
+         // face downn
+        new Vector3(), new Vector3(), new Vector3(),
+        // face up
+        new Vector3(), new Vector3(), new Vector3(),
+        // face left
+        new Vector3(), new Vector3(),
     };
 
     public Vector3[] blueCargoBayPositions =
     {
-        new Vector3(), // face down
-        new Vector3(),
-        new Vector3(),
-        new Vector3(), // face up
-        new Vector3(),
-        new Vector3(),
-        new Vector3(), // face right
-        new Vector3(),
+         // face down
+        new Vector3(), new Vector3(), new Vector3(),
+         // face up
+        new Vector3(), new Vector3(), new Vector3(),
+         // face right
+        new Vector3(), new Vector3(),
+    };
+
+    public Vector3[] redCargoPositions =
+    {
+         // bottom half
+        new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(),
+         // top half
+        new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(),
+    };
+
+    public Vector3[] blueCargoPositions =
+    {
+         // bottom half
+        new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(),
+         // top half
+        new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(),
     };
 
     public Transform[] bots;
     public Transform[] rockets;
+    public Transform[] redCargos;
+    public Transform[] blueCargos;
+    public Transform[] redPanels;
+    public Transform[] bluePanels;
     public Transform[] redCargoBays;
     public Transform[] blueCargoBays;
 
@@ -98,14 +120,14 @@ public class GameController : MonoBehaviour
         if (gameTime >= 0)
             timeLeft.GetComponent<TextMeshProUGUI>().text = ReturnTime((int)gameTime);
         if (gameTime <= 0) ToggleEngines();
-        redScorekeeper.GetComponent<TextMeshProUGUI>().text = "" + redScore;
-        blueScorekeeper.GetComponent<TextMeshProUGUI>().text = "" + blueScore;
+        redScorekeeper.GetComponent<TextMeshProUGUI>().text = "" + GlobalVariables.redScore;
+        blueScorekeeper.GetComponent<TextMeshProUGUI>().text = "" + GlobalVariables.blueScore;
     }
 
     void UpdateScore(int id, int s)
     {
-        if (id<3) redScore += s;
-        else blueScore += s;
+        if (id<3) GlobalVariables.redScore += s;
+        else GlobalVariables.blueScore += s;
     }
 
     string ReturnTime(int t)
@@ -160,6 +182,8 @@ public class GameController : MonoBehaviour
             }
         }
 
+
+
     }
 
     void PlaceBots()
@@ -210,4 +234,13 @@ public class GameController : MonoBehaviour
         }
     }
 
+    void LoadAction(Action action, int robotId)
+    {
+
+    }
+
+    void LoadAction(Action action, int robotId, int structID)
+    {
+
+    }
 }

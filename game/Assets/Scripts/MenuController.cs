@@ -94,8 +94,7 @@ public class MenuController : MonoBehaviour
             case 6:
                 ctrlText = "Joy4";
                 break;
-            default:
-                break;
+            default: break;
         }
 
         string robotItemText = "";
@@ -107,8 +106,7 @@ public class MenuController : MonoBehaviour
             case 1:
                 robotItemText = "panel";
                 break;
-            default:
-                break;
+            default: break;
         }
         string cargoBayItemText = "";
         switch (cargoBayItem.GetComponent<TMP_Dropdown>().value)
@@ -119,8 +117,7 @@ public class MenuController : MonoBehaviour
             case 1:
                 cargoBayItemText = "panel";
                 break;
-            default:
-                break;
+            default: break;
         }
 
         cfg["Robot-" + quickplayMenuNum]["team-number"].StringValue = teamInputText;
