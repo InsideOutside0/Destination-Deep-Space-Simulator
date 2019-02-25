@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 1980251765325428492}
   m_Layer: 0
   m_Name: RightWall
-  m_TagString: rocket
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -199,7 +199,7 @@ GameObject:
   - component: {fileID: 39613205522289479}
   m_Layer: 0
   m_Name: LeftWall
-  m_TagString: rocket
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -327,7 +327,7 @@ GameObject:
   - component: {fileID: 9026626480295078406}
   m_Layer: 0
   m_Name: LeftFace
-  m_TagString: rocket
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -453,7 +453,7 @@ GameObject:
   - component: {fileID: 7640164834575767556}
   m_Layer: 0
   m_Name: Rocket
-  m_TagString: Untagged
+  m_TagString: rocket
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -509,7 +509,7 @@ GameObject:
   - component: {fileID: 839719290881836113}
   m_Layer: 0
   m_Name: RightFace
-  m_TagString: rocket
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -637,7 +637,7 @@ GameObject:
   - component: {fileID: 5755773765436540860}
   m_Layer: 0
   m_Name: FrontFace
-  m_TagString: rocket
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

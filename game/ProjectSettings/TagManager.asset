@@ -15,6 +15,9 @@ TagManager:
   - rocket
   - robotItem
   - cargoBayItem
+  - cargo
+  - panel
+  - cargoBay
   layers:
   - Default
   - TransparentFX

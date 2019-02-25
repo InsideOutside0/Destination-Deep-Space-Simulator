@@ -21,6 +21,7 @@ public class GameController : MonoBehaviour
     private int blueRemainingCargo = 24;
     private int redRemainingPanels = 24;
     private int blueRemainingPanels = 24;
+    public Vector3 offscreen = new Vector3(50, 50, 0);
 
     public AudioSource musicSource;
 
@@ -32,10 +33,22 @@ public class GameController : MonoBehaviour
     public Transform cargo;
     public Transform panel;
 
+    public Transform redBottomLowHab;
+    public Transform redTopLowHab;
+    public Transform redHighHab;
+    public Transform blueBottomLowHab;
+    public Transform blueTopLowHab;
+    public Transform blueHighHab;
+    public bool habsHaveColliders;
+
     public Transform canvas;
     public Transform timeLeft;
     public Transform redScorekeeper;
     public Transform blueScorekeeper;
+    public Transform redCargoLeft;
+    public Transform blueCargoLeft;
+    public Transform redPanelsLeft;
+    public Transform bluePanelsLeft;
 
     public Vector2[] botPositions = // determined in Unity
     {
@@ -106,6 +119,7 @@ public class GameController : MonoBehaviour
         PlaceGamePieces();
         PlaceBots();
         warmupTime -= Time.deltaTime;
+        habsHaveColliders = false;
     }
 
     void Update()
@@ -120,14 +134,68 @@ public class GameController : MonoBehaviour
         if (gameTime >= 0)
             timeLeft.GetComponent<TextMeshProUGUI>().text = ReturnTime((int)gameTime);
         if (gameTime <= 0) ToggleEngines();
+        if (gameTime < 147 && !habsHaveColliders)
+        {
+            redTopLowHab.gameObject.AddComponent<BoxCollider2D>();
+            redBottomLowHab.gameObject.AddComponent<BoxCollider2D>();
+            redHighHab.gameObject.AddComponent<BoxCollider2D>();
+            blueBottomLowHab.gameObject.AddComponent<BoxCollider2D>();
+            blueTopLowHab.gameObject.AddComponent<BoxCollider2D>();
+            blueHighHab.gameObject.AddComponent<BoxCollider2D>();
+            habsHaveColliders = true;
+        }
         redScorekeeper.GetComponent<TextMeshProUGUI>().text = "" + GlobalVariables.redScore;
         blueScorekeeper.GetComponent<TextMeshProUGUI>().text = "" + GlobalVariables.blueScore;
+        redCargoLeft.GetComponent<TextMeshProUGUI>().text = RemainingPieces("red", "cargo");
+        blueCargoLeft.GetComponent<TextMeshProUGUI>().text = RemainingPieces("blue", "cargo");
+        redPanelsLeft.GetComponent<TextMeshProUGUI>().text = RemainingPieces("red", "panel");
+        bluePanelsLeft.GetComponent<TextMeshProUGUI>().text = RemainingPieces("blue", "panel");
     }
 
     void UpdateScore(int id, int s)
     {
         if (id<3) GlobalVariables.redScore += s;
         else GlobalVariables.blueScore += s;
+    }
+
+    string RemainingPieces(string team, string type)
+    {
+        int sum = 0;
+        if (type=="cargo")
+        {
+            if (team == "red")
+            {
+                foreach (Transform cargo in redCargos)
+                {
+                    if (!cargo.GetComponent<PieceProperties>().active) sum++;
+                }
+            }
+            if (team == "blue")
+            {
+                foreach (Transform cargo in blueCargos)
+                {
+                    if (!cargo.GetComponent<PieceProperties>().active) sum++;
+                }
+            }
+        }
+        if (type == "panel")
+        {
+            if (team == "red")
+            {
+                foreach (Transform panel in redPanels)
+                {
+                    if (!panel.GetComponent<PieceProperties>().active) sum++;
+                }
+            }
+            if (team == "blue")
+            {
+                foreach (Transform panel in bluePanels)
+                {
+                    if (!panel.GetComponent<PieceProperties>().active) sum++;
+                }
+            }
+        }
+        return "" + sum;
     }
 
     string ReturnTime(int t)
@@ -182,7 +250,36 @@ public class GameController : MonoBehaviour
             }
         }
 
-
+        redCargos = new Transform[24];
+        blueCargos = new Transform[24];
+        redPanels = new Transform[24];
+        bluePanels = new Transform[24];
+        for (int i = 0; i<24; i++)
+        {
+            if (i < 12)
+            {
+                redCargos[i] = Instantiate(cargo, redCargoPositions[i], Quaternion.identity);
+                redCargos[i].GetComponent<PieceProperties>().id = i;
+                redCargos[i].GetComponent<PieceProperties>().active = true;
+                blueCargos[i] = Instantiate(cargo, blueCargoPositions[i], Quaternion.identity);
+                blueCargos[i].GetComponent<PieceProperties>().id = i;
+                blueCargos[i].GetComponent<PieceProperties>().active = true;
+            } else
+            {
+                redCargos[i] = Instantiate(cargo, offscreen, Quaternion.identity);
+                redCargos[i].GetComponent<PieceProperties>().id = i;
+                redCargos[i].GetComponent<PieceProperties>().active = false;
+                blueCargos[i] = Instantiate(cargo, offscreen, Quaternion.identity);
+                blueCargos[i].GetComponent<PieceProperties>().id = i;
+                blueCargos[i].GetComponent<PieceProperties>().active = false;
+            }
+            redPanels[i] = Instantiate(cargo, offscreen, Quaternion.identity);
+            redPanels[i].GetComponent<PieceProperties>().id = i;
+            redPanels[i].GetComponent<PieceProperties>().active = false;
+            bluePanels[i] = Instantiate(cargo, offscreen, Quaternion.identity);
+            bluePanels[i].GetComponent<PieceProperties>().id = i;
+            bluePanels[i].GetComponent<PieceProperties>().active = false;
+        }
 
     }
 
@@ -210,26 +307,26 @@ public class GameController : MonoBehaviour
 
             if (GlobalVariables.quickplay)
             {
-                bots[i].GetComponent<RobotActions>().cargoLevel = 3;
-                bots[i].GetComponent<RobotActions>().panelLevel = 3;
-                bots[i].GetComponent<RobotActions>().hasVision = true;
-                bots[i].GetComponent<RobotActions>().hasRamp = false;
+                bots[i].GetComponent<MoveBot>().cargoLevel = 3;
+                bots[i].GetComponent<MoveBot>().panelLevel = 3;
+                bots[i].GetComponent<MoveBot>().hasVision = true;
+                bots[i].GetComponent<MoveBot>().hasRamp = false;
 
-                bots[i].GetComponent<RobotActions>().lowCargoAcc = 1;
-                bots[i].GetComponent<RobotActions>().medCargoAcc = 1;
-                bots[i].GetComponent<RobotActions>().highCargoAcc = 1;
-                bots[i].GetComponent<RobotActions>().lowPanelAcc = 1;
-                bots[i].GetComponent<RobotActions>().medPanelAcc = 1;
-                bots[i].GetComponent<RobotActions>().highPanelAcc = 1;
+                bots[i].GetComponent<MoveBot>().lowCargoAcc = 1;
+                bots[i].GetComponent<MoveBot>().medCargoAcc = 1;
+                bots[i].GetComponent<MoveBot>().highCargoAcc = 1;
+                bots[i].GetComponent<MoveBot>().lowPanelAcc = 1;
+                bots[i].GetComponent<MoveBot>().medPanelAcc = 1;
+                bots[i].GetComponent<MoveBot>().highPanelAcc = 1;
 
-                bots[i].GetComponent<RobotActions>().lowCargoSpeed = 1; // in seconds
-                bots[i].GetComponent<RobotActions>().medCargoSpeed = 2;
-                bots[i].GetComponent<RobotActions>().highCargoSpeed = 3;
-                bots[i].GetComponent<RobotActions>().lowPanelSpeed = 1;
-                bots[i].GetComponent<RobotActions>().medPanelSpeed = 2;
-                bots[i].GetComponent<RobotActions>().highPanelSpeed = 3;
-                bots[i].GetComponent<RobotActions>().sideAutoSpeedMod = 1;
-                bots[i].GetComponent<RobotActions>().centerAutoSpeedMod = 1;
+                bots[i].GetComponent<MoveBot>().lowCargoSpeed = 1; // in seconds
+                bots[i].GetComponent<MoveBot>().medCargoSpeed = 2;
+                bots[i].GetComponent<MoveBot>().highCargoSpeed = 3;
+                bots[i].GetComponent<MoveBot>().lowPanelSpeed = 1;
+                bots[i].GetComponent<MoveBot>().medPanelSpeed = 2;
+                bots[i].GetComponent<MoveBot>().highPanelSpeed = 3;
+                bots[i].GetComponent<MoveBot>().sideAutoSpeedMod = 1;
+                bots[i].GetComponent<MoveBot>().centerAutoSpeedMod = 1;
             }
         }
     }
