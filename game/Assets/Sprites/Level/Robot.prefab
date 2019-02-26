@@ -469,6 +469,8 @@ MonoBehaviour:
   slowdown: 1.5
   velocityCap: 8
   id: 0
+  otherID: 0
+  actionTimer: 0
   controllerName: 
   started: 0
   inAction: 0
@@ -511,7 +513,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 4456862863583006991}
   m_BodyType: 0
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
@@ -825,3 +827,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32dc317020240e4479261a0656f94607, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m: {fileID: 0}

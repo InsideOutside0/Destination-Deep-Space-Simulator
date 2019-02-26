@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7685813497750844201}
   - component: {fileID: 6995670728787733013}
+  - component: {fileID: 7119325762128332268}
   m_Layer: 0
   m_Name: LeftHitbox
   m_TagString: Untagged
@@ -57,6 +58,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 1.25}
   m_EdgeRadius: 0
+--- !u!50 &7119325762128332268
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4294759634747527979}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &5966218205760521105
 GameObject:
   m_ObjectHideFlags: 0
@@ -761,6 +783,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2313039736619845029}
   - component: {fileID: 523811675771917557}
+  - component: {fileID: 4814815898694195322}
   m_Layer: 0
   m_Name: CenterHitbox
   m_TagString: Untagged
@@ -808,6 +831,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 1.25}
   m_EdgeRadius: 0
+--- !u!50 &4814815898694195322
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7073248582490846609}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &7278913589414814951
 GameObject:
   m_ObjectHideFlags: 0
@@ -818,6 +862,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5082413356503450611}
   - component: {fileID: 7405549515576671855}
+  - component: {fileID: 16988098558926432}
   m_Layer: 0
   m_Name: RightHitbox
   m_TagString: Untagged
@@ -865,3 +910,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 1.25}
   m_EdgeRadius: 0
+--- !u!50 &16988098558926432
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7278913589414814951}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

@@ -18,6 +18,7 @@ TagManager:
   - cargo
   - panel
   - cargoBay
+  - allianceStationLine
   layers:
   - Default
   - TransparentFX

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class MoveBot : MonoBehaviour {
 
@@ -9,6 +10,8 @@ public class MoveBot : MonoBehaviour {
     public float slowdown = 1.5f; // I refuse to call it "deceleration"
     public float velocityCap = 3f;
     public int id;
+    public int otherID;
+    public float actionTimer;
 
     private Rigidbody2D rb; // this is what handles velocity and collisions and such
 
@@ -62,6 +65,9 @@ public class MoveBot : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>(); // you cannot use a RigidBody without accessing it on the object first
         started = 0;
         inAction = 1;
+        actionTimer = 0;
+        ballID = -1;
+        panelID = -1;
         currentAction = GameController.Action.None;
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         pressedAction = false;
@@ -112,16 +118,44 @@ public class MoveBot : MonoBehaviour {
             midInput = Input.GetAxisRaw("Joy4-Mid");
             highInput = Input.GetAxisRaw("Joy4-High");
         }
-        if (actionInput >= 1) pressedAction = true;
-        if (midInput >= 1) pressedMid = true;
-        if (highInput >= 1) pressedHigh = true;
+        if (actionInput >= 0.9) pressedAction = true;
+        if (actionInput < 0.9) pressedAction = false;
+        if (midInput >= 0.9) pressedMid = true;
+        if (midInput < 0.9) pressedMid = false;
+        if (highInput >= 0.9) pressedHigh = true;
+        if (highInput < 0.9) pressedHigh = false;
         angle = transform.rotation.eulerAngles.z; // the z angle is the effective angle in a 2D space
     }
 
     // Update is called once per frame
     void Update()
     {
+        Transform action = transform.GetChild(3);
+        Transform actionText = transform.GetChild(4);
         GetInputs();
+        if (actionTimer>0)
+        {
+            actionTimer -= Time.deltaTime;
+            Color temp = action.GetComponent<SpriteRenderer>().color;
+            temp.a = 255;
+            action.GetComponent<SpriteRenderer>().color = temp;
+            actionText.GetComponent<TextMeshPro>().alpha = 255;
+            actionText.GetComponent<TextMeshPro>().text = "" + (int)actionTimer;
+        } else
+        {
+            actionTimer = 0;
+            inAction = 1;
+            Color temp = action.GetComponent<SpriteRenderer>().color;
+            temp.a = 0;
+            action.GetComponent<SpriteRenderer>().color = temp;
+            actionText.GetComponent<TextMeshPro>().alpha = 0;
+            if (currentAction != GameController.Action.None)
+            {
+                if (otherID >-1) gameController.LoadAction(currentAction, id, otherID);
+                else gameController.LoadAction(currentAction, id);
+                currentAction = GameController.Action.None;
+            }
+        }
     }
 
     // Called less frequently than Update()
@@ -195,9 +229,19 @@ public class MoveBot : MonoBehaviour {
             
     }
 
-    public void StartAction(GameController.Action action)
+    public void StartAction(GameController.Action action, float time)
     {
+        currentAction = action;
+        inAction = 0;
+        actionTimer = time;
+    }
 
+    public void StartAction(GameController.Action action, float time, int objID)
+    {
+        currentAction = action;
+        otherID = objID;
+        inAction = 0;
+        actionTimer = time;
     }
 
 

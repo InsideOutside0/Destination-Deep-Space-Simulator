@@ -6,8 +6,9 @@ using TMPro;
 
 public class GameController : MonoBehaviour
 {
-    public enum Action { None, CollectCargo, CollectPanel, CargoLow, CargoMid, CargoHigh,
-        PanelLow, PanelMid, PanelHigh, CargoInBay, PanelInBay };
+    public enum Action { None, CollectCargo, CollectCargoFromGround, CollectPanel, CargoLow, CargoMid, CargoHigh,
+        PanelLowLeft, PanelLowRight, PanelMidLeft, PanelMidRight,
+        PanelHighLeft, PanelHighRight, CargoInBay, PanelInBay };
 
     const string quickplayConfig = "quickplay.cfg";
     const string defaultConfig = "quickplay.cfg";
@@ -17,10 +18,6 @@ public class GameController : MonoBehaviour
     private float endDelay = 2;
     private bool gameStarted;
 
-    private int redRemainingCargo = 24;
-    private int blueRemainingCargo = 24;
-    private int redRemainingPanels = 24;
-    private int blueRemainingPanels = 24;
     public Vector3 offscreen = new Vector3(50, 50, 0);
 
     public AudioSource musicSource;
@@ -49,6 +46,7 @@ public class GameController : MonoBehaviour
     public Transform blueCargoLeft;
     public Transform redPanelsLeft;
     public Transform bluePanelsLeft;
+    public Transform allianceStationLine;
 
     public Vector2[] botPositions = // determined in Unity
     {
@@ -104,6 +102,12 @@ public class GameController : MonoBehaviour
         new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(), new Vector3(),
     };
 
+    public Vector3[] allianceStationLinePositions =
+    {
+        new Vector3(), new Vector3(), // red
+        new Vector3(), new Vector3(), // blue
+    };
+
     public Transform[] bots;
     public Transform[] rockets;
     public Transform[] redCargos;
@@ -112,6 +116,7 @@ public class GameController : MonoBehaviour
     public Transform[] bluePanels;
     public Transform[] redCargoBays;
     public Transform[] blueCargoBays;
+    public Transform[] allianceStationLines;
 
     void Start()
     {
@@ -281,6 +286,10 @@ public class GameController : MonoBehaviour
             bluePanels[i].GetComponent<PieceProperties>().active = false;
         }
 
+        allianceStationLines = new Transform[4];
+        for (int i = 0; i < 4; i++)
+            allianceStationLines[i] = Instantiate(allianceStationLine, allianceStationLinePositions[i], Quaternion.identity);
+
     }
 
     void PlaceBots()
@@ -331,12 +340,59 @@ public class GameController : MonoBehaviour
         }
     }
 
-    void LoadAction(Action action, int robotId)
+    public void LoadAction(Action action, int robotId)
     {
-
+        print("yeet");
+        if (action == Action.CollectCargo)
+        {
+            for (int i = 0; i<24; i++)
+            {
+                if (robotId < 3) if (!redCargos[i].GetComponent<PieceProperties>().active)
+                    {
+                        redCargos[i].GetComponent<PieceProperties>().active = true;
+                        redCargos[i].GetComponent<CircleCollider2D>().enabled = false;
+                        redCargos[i].GetComponent<BoxCollider2D>().enabled = false;
+                        redCargos[i].transform.SetPositionAndRotation(bots[robotId].transform.position, Quaternion.identity);
+                        redCargos[i].parent = bots[robotId];
+                        break;
+                    }
+                if (!blueCargos[i].GetComponent<PieceProperties>().active)
+                {
+                    blueCargos[i].GetComponent<PieceProperties>().active = true;
+                    blueCargos[i].GetComponent<CircleCollider2D>().enabled = false;
+                    blueCargos[i].GetComponent<BoxCollider2D>().enabled = false;
+                    blueCargos[i].transform.SetPositionAndRotation(bots[robotId].transform.position, Quaternion.identity);
+                    blueCargos[i].parent = bots[robotId];
+                    break;
+                }
+            }
+        } else if (action == Action.CollectPanel)
+        {
+            for (int i = 0; i < 24; i++)
+            {
+                if (robotId < 3) if (!redPanels[i].GetComponent<PieceProperties>().active)
+                    {
+                        redPanels[i].GetComponent<PieceProperties>().active = true;
+                        redPanels[i].GetComponent<CircleCollider2D>().enabled = false;
+                        redPanels[i].GetComponent<BoxCollider2D>().enabled = false;
+                        redPanels[i].transform.SetPositionAndRotation(bots[robotId].transform.position, Quaternion.identity);
+                        redPanels[i].parent = bots[robotId];
+                        break;
+                    }
+                if (!bluePanels[i].GetComponent<PieceProperties>().active)
+                {
+                    bluePanels[i].GetComponent<PieceProperties>().active = true;
+                    bluePanels[i].GetComponent<CircleCollider2D>().enabled = false;
+                    bluePanels[i].GetComponent<BoxCollider2D>().enabled = false;
+                    bluePanels[i].transform.SetPositionAndRotation(bots[robotId].transform.position, Quaternion.identity);
+                    bluePanels[i].parent = bots[robotId];
+                    break;
+                }
+            }
+        }
     }
 
-    void LoadAction(Action action, int robotId, int structID)
+    public void LoadAction(Action action, int robotId, int objID)
     {
 
     }
