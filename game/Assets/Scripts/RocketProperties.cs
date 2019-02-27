@@ -7,12 +7,14 @@ public class RocketProperties : MonoBehaviour
     public int id;
     public int[] cargoOccupied = 
     {
-        -1, -1, -1, // left
-        -1, -1, -1, // right
+        -1, -1, // bottom
+        -1, -1, // mid
+        -1, -1, // top
     };
     public int[] panelOccupied = 
     {
-        -1, -1, -1, // left
-        -1, -1, -1, // right
+        -1, -1, // bottom
+        -1, -1, // mid
+        -1, -1, // top
     };
 }

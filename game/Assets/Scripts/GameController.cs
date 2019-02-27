@@ -125,6 +125,7 @@ public class GameController : MonoBehaviour
         PlaceBots();
         warmupTime -= Time.deltaTime;
         habsHaveColliders = false;
+        GlobalVariables.quickplay = true; // temporary, for debug purposes
     }
 
     void Update()
@@ -278,10 +279,10 @@ public class GameController : MonoBehaviour
                 blueCargos[i].GetComponent<PieceProperties>().id = i;
                 blueCargos[i].GetComponent<PieceProperties>().active = false;
             }
-            redPanels[i] = Instantiate(cargo, offscreen, Quaternion.identity);
+            redPanels[i] = Instantiate(panel, offscreen, Quaternion.identity);
             redPanels[i].GetComponent<PieceProperties>().id = i;
             redPanels[i].GetComponent<PieceProperties>().active = false;
-            bluePanels[i] = Instantiate(cargo, offscreen, Quaternion.identity);
+            bluePanels[i] = Instantiate(panel, offscreen, Quaternion.identity);
             bluePanels[i].GetComponent<PieceProperties>().id = i;
             bluePanels[i].GetComponent<PieceProperties>().active = false;
         }
@@ -342,7 +343,6 @@ public class GameController : MonoBehaviour
 
     public void LoadAction(Action action, int robotId)
     {
-        print("yeet");
         if (action == Action.CollectCargo)
         {
             for (int i = 0; i<24; i++)
@@ -350,19 +350,23 @@ public class GameController : MonoBehaviour
                 if (robotId < 3) if (!redCargos[i].GetComponent<PieceProperties>().active)
                     {
                         redCargos[i].GetComponent<PieceProperties>().active = true;
+                        redCargos[i].GetComponent<PieceProperties>().onRobot = true;
                         redCargos[i].GetComponent<CircleCollider2D>().enabled = false;
                         redCargos[i].GetComponent<BoxCollider2D>().enabled = false;
                         redCargos[i].transform.SetPositionAndRotation(bots[robotId].transform.position, Quaternion.identity);
                         redCargos[i].parent = bots[robotId];
+                        bots[robotId].GetComponent<MoveBot>().cargoID = i;
                         break;
                     }
                 if (!blueCargos[i].GetComponent<PieceProperties>().active)
                 {
                     blueCargos[i].GetComponent<PieceProperties>().active = true;
+                    blueCargos[i].GetComponent<PieceProperties>().onRobot = true;
                     blueCargos[i].GetComponent<CircleCollider2D>().enabled = false;
                     blueCargos[i].GetComponent<BoxCollider2D>().enabled = false;
                     blueCargos[i].transform.SetPositionAndRotation(bots[robotId].transform.position, Quaternion.identity);
                     blueCargos[i].parent = bots[robotId];
+                    bots[robotId].GetComponent<MoveBot>().cargoID = i;
                     break;
                 }
             }
@@ -373,19 +377,21 @@ public class GameController : MonoBehaviour
                 if (robotId < 3) if (!redPanels[i].GetComponent<PieceProperties>().active)
                     {
                         redPanels[i].GetComponent<PieceProperties>().active = true;
+                        redPanels[i].GetComponent<PieceProperties>().onRobot = true;
                         redPanels[i].GetComponent<CircleCollider2D>().enabled = false;
-                        redPanels[i].GetComponent<BoxCollider2D>().enabled = false;
                         redPanels[i].transform.SetPositionAndRotation(bots[robotId].transform.position, Quaternion.identity);
                         redPanels[i].parent = bots[robotId];
+                        bots[robotId].GetComponent<MoveBot>().panelID = i;
                         break;
                     }
                 if (!bluePanels[i].GetComponent<PieceProperties>().active)
                 {
                     bluePanels[i].GetComponent<PieceProperties>().active = true;
+                    bluePanels[i].GetComponent<PieceProperties>().onRobot = true;
                     bluePanels[i].GetComponent<CircleCollider2D>().enabled = false;
-                    bluePanels[i].GetComponent<BoxCollider2D>().enabled = false;
                     bluePanels[i].transform.SetPositionAndRotation(bots[robotId].transform.position, Quaternion.identity);
                     bluePanels[i].parent = bots[robotId];
+                    bots[robotId].GetComponent<MoveBot>().panelID = i;
                     break;
                 }
             }
@@ -394,6 +400,77 @@ public class GameController : MonoBehaviour
 
     public void LoadAction(Action action, int robotId, int objID)
     {
+        Transform bot = bots[robotId];
+        Transform c = bot.GetChild(bot.childCount - 1);
+        bool isRed = (robotId < 3);
+        switch (action)
+        {
+            case Action.CargoLow:
+                RocketProperties r1 = rockets[objID].GetComponent<RocketProperties>();
+                if (r1.cargoOccupied[0] > -1) r1.cargoOccupied[1] = bot.GetComponent<MoveBot>().otherID;
+                else r1.cargoOccupied[0] = bot.GetComponent<MoveBot>().otherID;
+                c.parent = null; // this works I guess
+                c.transform.position = offscreen;
+                UpdateScore(robotId, 3);
+                bot.GetComponent<MoveBot>().cargoID = -1;
+                break;
+            case Action.CargoMid:
+                RocketProperties r2 = rockets[objID].GetComponent<RocketProperties>();
+                if (r2.cargoOccupied[2] > -1) r2.cargoOccupied[3] = bot.GetComponent<MoveBot>().otherID;
+                else r2.cargoOccupied[2] = bot.GetComponent<MoveBot>().otherID;
+                c.parent = null;
+                c.transform.position = offscreen;
+                UpdateScore(robotId, 3);
+                bot.GetComponent<MoveBot>().cargoID = -1;
+                break;
+            case Action.CargoHigh:
+                RocketProperties r3 = rockets[objID].GetComponent<RocketProperties>();
+                if (r3.cargoOccupied[4] > -1) r3.cargoOccupied[5] = bot.GetComponent<MoveBot>().otherID;
+                else r3.cargoOccupied[4] = bot.GetComponent<MoveBot>().otherID;
+                c.parent = null;
+                c.transform.position = offscreen;
+                UpdateScore(robotId, 3);
+                bot.GetComponent<MoveBot>().cargoID = -1;
+                break;
+            case Action.CargoInBay:
+                CargoBayProperties c1;
+                if (isRed) c1 = redCargoBays[objID].GetComponent<CargoBayProperties>();
+                else c1 = blueCargoBays[objID].GetComponent<CargoBayProperties>();
+                c1.cargoOccupied = bot.GetComponent<MoveBot>().otherID;
+                c.transform.parent = null;
+                c.transform.position = c1.transform.position; // that's confusing, will fix later
+                UpdateScore(robotId, 3);
+                bot.GetComponent<MoveBot>().cargoID = -1;
+                break;
+            case Action.PanelLowLeft:
+                break;
+            case Action.PanelLowRight:
+                break;
+            case Action.PanelMidLeft:
+                break;
+            case Action.PanelMidRight:
+                break;
+            case Action.PanelHighLeft:
+                break;
+            case Action.PanelHighRight:
+                break;
+            case Action.PanelInBay:
+                break;
+            case Action.CollectCargoFromGround:
+                Transform cargo;
+                if (isRed) cargo = redCargos[objID];
+                else cargo = blueCargos[objID];
+                cargo.GetComponent<PieceProperties>().onRobot = true;
+                cargo.GetComponent<CircleCollider2D>().enabled = false;
+                cargo.GetComponent<BoxCollider2D>().enabled = false;
+                cargo.transform.SetPositionAndRotation(bots[robotId].transform.position, Quaternion.identity);
+                cargo.parent = bots[robotId];
+                bots[robotId].GetComponent<MoveBot>().cargoID = objID;
+                break;
 
+            default: break;
+        }
+        bot.GetComponent<MoveBot>().otherID = -1;
+        bot.GetComponent<MoveBot>().panelID = -1;
     }
 }

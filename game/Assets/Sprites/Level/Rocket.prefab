@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7119325762128332268}
   m_Layer: 0
   m_Name: LeftHitbox
-  m_TagString: Untagged
+  m_TagString: leftHitBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -786,7 +786,7 @@ GameObject:
   - component: {fileID: 4814815898694195322}
   m_Layer: 0
   m_Name: CenterHitbox
-  m_TagString: Untagged
+  m_TagString: rightHitBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -865,7 +865,7 @@ GameObject:
   - component: {fileID: 16988098558926432}
   m_Layer: 0
   m_Name: RightHitbox
-  m_TagString: Untagged
+  m_TagString: centerHitBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

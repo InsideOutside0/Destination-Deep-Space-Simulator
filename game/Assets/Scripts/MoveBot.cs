@@ -54,7 +54,7 @@ public class MoveBot : MonoBehaviour {
     public bool pressedAction;
     public bool pressedMid;
     public bool pressedHigh;
-    public int ballID;
+    public int cargoID;
     public int panelID;
     public GameController.Action currentAction;
 
@@ -66,8 +66,9 @@ public class MoveBot : MonoBehaviour {
         started = 0;
         inAction = 1;
         actionTimer = 0;
-        ballID = -1;
+        cargoID = -1;
         panelID = -1;
+        otherID = -1;
         currentAction = GameController.Action.None;
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         pressedAction = false;
@@ -151,8 +152,10 @@ public class MoveBot : MonoBehaviour {
             actionText.GetComponent<TextMeshPro>().alpha = 0;
             if (currentAction != GameController.Action.None)
             {
+
                 if (otherID >-1) gameController.LoadAction(currentAction, id, otherID);
                 else gameController.LoadAction(currentAction, id);
+
                 currentAction = GameController.Action.None;
             }
         }

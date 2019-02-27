@@ -16,22 +16,21 @@ public class RobotCollider : MonoBehaviour
     { // a LOT of "if" chains...oh dear god
         Transform o = collision.transform;
         Transform p = o;
-        bool hasParent = (o.root != o);
-        if (hasParent) p = o.parent;
+        if (o.root != o) p = o.parent;
         if (m.pressedAction)
         {
             if (m.pressedMid)
             {
-                if (m.ballID > -1) // has a ball
+                if (m.cargoID > -1) // has a ball
                 {
-                    if (o.name == "CenterHitBox")
+                    if (o.tag == "centerHitBox" && p.GetComponent<RocketProperties>().cargoOccupied[1] < 0)
                         m.StartAction(GameController.Action.CargoMid, m.medCargoSpeed, p.GetComponent<RocketProperties>().id);
                 }
                 else if (m.panelID > -1)
                 {
-                    if (o.name == "LeftHitbox")
+                    if (o.tag == "leftHitbox" && p.GetComponent<RocketProperties>().panelOccupied[2] < 0)
                         m.StartAction(GameController.Action.PanelMidLeft, m.medPanelSpeed, p.GetComponent<RocketProperties>().id);
-                    if (o.name == "RightHitBox")
+                    if (o.tag == "rightHitBox" && p.GetComponent<RocketProperties>().panelOccupied[3]<0)
                         m.StartAction(GameController.Action.PanelMidRight, m.medPanelSpeed, p.GetComponent<RocketProperties>().id);
                 }
                 else
@@ -42,16 +41,16 @@ public class RobotCollider : MonoBehaviour
             }
             else if (m.pressedHigh)
             {
-                if (m.ballID > -1) // has a ball
+                if (m.cargoID > -1)
                 {
-                    if (o.name == "CenterHitBox")
+                    if (o.tag == "centerHitBox" && p.GetComponent<RocketProperties>().cargoOccupied[3] < 0)
                         m.StartAction(GameController.Action.CargoHigh, m.highCargoSpeed, p.GetComponent<RocketProperties>().id);
                 }
                 else if (m.panelID > -1)
                 {
-                    if (o.name == "LeftHitbox")
+                    if (o.tag == "leftHitbox" && p.GetComponent<RocketProperties>().panelOccupied[4] < 0)
                         m.StartAction(GameController.Action.PanelHighLeft, m.highPanelSpeed, p.GetComponent<RocketProperties>().id);
-                    if (o.name == "RightHitBox")
+                    if (o.tag == "rightHitBox" && p.GetComponent<RocketProperties>().panelOccupied[5] < 0)
                         m.StartAction(GameController.Action.PanelHighRight, m.highPanelSpeed, p.GetComponent<RocketProperties>().id);
                 }
                 else
@@ -62,20 +61,20 @@ public class RobotCollider : MonoBehaviour
             }
             else // no other buttons
             {
-                if (m.ballID > -1) // has a ball
+                if (m.cargoID > -1)
                 {
-                    if (o.name == "CenterHitBox")
+                    if (o.tag == "centerHitBox" && p.GetComponent<RocketProperties>().cargoOccupied[5] < 0)
                         m.StartAction(GameController.Action.CargoLow, m.lowCargoSpeed, p.GetComponent<RocketProperties>().id);
-                    if (o.tag == "cargoBay")
+                    if (o.tag == "cargoBayHitBox" && p.GetComponent<CargoBayProperties>().cargoOccupied < 0)
                         m.StartAction(GameController.Action.CargoInBay, m.lowCargoSpeed, p.GetComponent<CargoBayProperties>().id);
                 }
                 else if (m.panelID > -1)
                 {
-                    if (o.name == "LeftHitbox")
+                    if (o.tag == "leftHitbox" && p.GetComponent<RocketProperties>().panelOccupied[0] < 0)
                         m.StartAction(GameController.Action.PanelLowLeft, m.lowPanelSpeed, p.GetComponent<RocketProperties>().id);
-                    if (o.name == "RightHitBox")
+                    if (o.tag == "rightHitBox" && p.GetComponent<RocketProperties>().panelOccupied[1] < 0)
                         m.StartAction(GameController.Action.PanelLowRight, m.lowPanelSpeed, p.GetComponent<RocketProperties>().id);
-                    if (o.tag == "cargoBay")
+                    if (o.tag == "cargoBayHitBox" && p.GetComponent<CargoBayProperties>().panelOccupied < 0)
                         m.StartAction(GameController.Action.PanelInBay, m.lowCargoSpeed, p.GetComponent<CargoBayProperties>().id);
                 }
                 else

@@ -19,6 +19,10 @@ TagManager:
   - panel
   - cargoBay
   - allianceStationLine
+  - leftHitBox
+  - centerHitBox
+  - rightHitBox
+  - cargoBayHitbox
   layers:
   - Default
   - TransparentFX

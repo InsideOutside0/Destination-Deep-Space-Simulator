@@ -8,4 +8,9 @@ public class PieceProperties : MonoBehaviour
     public bool active;
     public bool onRobot;
     public bool scored;
+
+    private void Update()
+    {
+        if (onRobot) transform.position = transform.parent.position;
+    }
 }
