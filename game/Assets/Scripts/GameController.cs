@@ -125,7 +125,7 @@ public class GameController : MonoBehaviour
         PlaceBots();
         warmupTime -= Time.deltaTime;
         habsHaveColliders = false;
-        GlobalVariables.quickplay = true; // temporary, for debug purposes
+        GlobalVariables.quickplay = true; // temporary, for debug purposes EDIT: probably not temporary anymore lmao
     }
 
     void Update()
@@ -315,7 +315,7 @@ public class GameController : MonoBehaviour
             bots[i].GetChild(1).GetComponent<TextMeshPro>().text = cfg["Robot-" + n]["team-number"].StringValue;
             bots[i].GetComponent<MoveBot>().controllerName = cfg["Robot-" + n]["controller-type"].StringValue;
 
-            if (GlobalVariables.quickplay)
+            if (GlobalVariables.quickplay) // let's be real, manual setup is not gonna happen :/
             {
                 bots[i].GetComponent<MoveBot>().cargoLevel = 3;
                 bots[i].GetComponent<MoveBot>().panelLevel = 3;
@@ -458,8 +458,8 @@ public class GameController : MonoBehaviour
                 break;
             case Action.CollectCargoFromGround:
                 Transform cargo;
-                if (isRed) cargo = redCargos[objID];
-                else cargo = blueCargos[objID];
+                if (isRed) cargo = redCargos[objID]; // these two lines can cause problems if collecting wrong team's cargo
+                else cargo = blueCargos[objID]; // no, it's not worth fixing
                 cargo.GetComponent<PieceProperties>().onRobot = true;
                 cargo.GetComponent<CircleCollider2D>().enabled = false;
                 cargo.GetComponent<BoxCollider2D>().enabled = false;
